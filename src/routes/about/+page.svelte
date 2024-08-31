@@ -1,10 +1,14 @@
-<div>about</div>
+<script>
+	import { format } from 'svelte-i18n';
+</script>
+
+<div>{$format('about_content')}</div>
 
 <style>
 	div {
-		height: 100dvh;
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		height: 75vh;
 	}
 </style>

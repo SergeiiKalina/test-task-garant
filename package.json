@@ -53,6 +53,7 @@
 	"types": "./dist/index.d.ts",
 	"type": "module",
 	"dependencies": {
+		"luxon": "^3.5.0",
 		"svelte-i18n": "^4.0.0"
 	}
 }

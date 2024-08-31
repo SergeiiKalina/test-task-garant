@@ -1,14 +1,14 @@
 <script>
-	import { t } from '../i18n.js';
+	import { format } from 'svelte-i18n';
 </script>
 
-<div class="text-column">{t('home.content')}</div>
+<div>{$format('home_content')}</div>
 
 <style>
 	div {
-		height: 100dvh;
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		height: 75vh;
 	}
 </style>
