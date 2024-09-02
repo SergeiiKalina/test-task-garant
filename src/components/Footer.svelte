@@ -1,9 +1,9 @@
 <script>
-	import { format } from 'svelte-i18n';
+	import { t } from '$lib/dictionary/index.js';
 </script>
 
 <footer>
-	<h1>{$format('footer')}</h1>
+	<h1>{$t('footer.footer')}</h1>
 </footer>
 
 <style>

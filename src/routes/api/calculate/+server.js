@@ -6,14 +6,10 @@ export async function POST(event) {
 	const body = await event.request.json();
 	const numberOne = body.numberOne;
 	const numberTwo = body.numberTwo;
-	const isValid =
-		typeof numberOne === 'number' &&
-		numberOne > 0 &&
-		typeof numberTwo === 'number' &&
-		numberTwo > 0;
 
-	if (isValid) {
-		const result = numberOne + numberTwo;
+	const result = +numberOne + +numberTwo;
+	const isValidResult = typeof result === 'number';
+	if (isValidResult) {
 		const now = new Date();
 		const createdAt = now.toISOString();
 

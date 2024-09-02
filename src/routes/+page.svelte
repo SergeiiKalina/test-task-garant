@@ -1,8 +1,8 @@
 <script>
-	import { format } from 'svelte-i18n';
+	import { t } from '$lib/dictionary/index.js';
 </script>
 
-<div>{$format('home_content')}</div>
+<div>{$t('home.home_content')}</div>
 
 <style>
 	div {

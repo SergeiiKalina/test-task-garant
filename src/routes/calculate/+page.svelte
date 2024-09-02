@@ -1,7 +1,7 @@
 <script>
-	import { format } from 'svelte-i18n';
 	import { DateTime } from 'luxon';
 	import { onMount } from 'svelte';
+	import { t } from '$lib/dictionary/index.js';
 	export let data;
 	let timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
@@ -31,7 +31,7 @@
 		});
 
 		if (!res.ok) {
-			alert($format('alert'));
+			alert($t('global.alert'));
 		} else {
 			const answer = await res.json();
 			result = answer.result;
@@ -41,24 +41,24 @@
 </script>
 
 <div class="container">
-	<h1>{$format('calculate_header')}</h1>
+	<h1>{$t('calculate.calculate_header')}</h1>
 	<form method="POST" action="/api/calculate" on:submit|preventDefault={handleNumber}>
 		<label><input type="number" name="numberOne" bind:value={numberOne} /></label>
 		<span>+</span>
 		<label><input type="number" name="numberTwo" bind:value={numberTwo} /></label>
-		<h2>{$format('calculate_result')}: {result}</h2>
-		<button type="submit">{$format('calculate_button')}</button>
+		<h2>{$t('calculate.calculate_result')}: {result}</h2>
+		<button type="submit">{$t('calculate.calculate_button')}</button>
 	</form>
 
-	<h2>{$format('historyResults')}</h2>
+	<h2>{$t('calculate.history_results')}</h2>
 
 	{#if history.length}
 		<ul class="history-list">
 			{#each history as item}
 				<li class="history-item">
-					<span class="data-label">{$format('data')}:</span>
+					<span class="data-label">{$t('calculate.data')}:</span>
 					{item.time}
-					<span class="result-label">{$format('result')}:</span>
+					<span class="result-label">{$t('calculate.result')}:</span>
 					{item.result}
 				</li>
 			{/each}
