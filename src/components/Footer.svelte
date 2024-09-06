@@ -8,7 +8,7 @@
 
 <style>
 	footer {
-		position: fixed;
+		position: static;
 		bottom: 0;
 		height: 10%;
 		width: 100%;

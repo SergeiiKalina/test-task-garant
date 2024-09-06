@@ -11,6 +11,7 @@
 		<li><a href="/">{$t('header.home')}</a></li>
 		<li><a href="/about">{$t('header.about')}</a></li>
 		<li><a href="/calculate">{$t('header.calculate')}</a></li>
+		<li><a href="/blogs">{$t('header.blogs')}</a></li>
 	</ul>
 	<select bind:value={$locale} on:change={handleChange}>
 		{#each $locales as value}
@@ -27,7 +28,7 @@
 		min-height: 10%;
 	}
 	select {
-		width: 70px;
+		width: 150px;
 		height: 50px;
 		font-size: 30px;
 		margin-top: 10px;
