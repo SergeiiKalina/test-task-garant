@@ -1,12 +1,12 @@
 <script>
 	import src from '$lib/images/3.webp';
+	import Pagination from '../../components/Pagination.svelte';
 	export let data;
 	let currentPage = 1;
 	$: quantityBlogs = 9;
 	$: startItem = (currentPage - 1) * quantityBlogs;
 	$: blogs = data.blogs.slice(startItem, quantityBlogs + startItem);
 	$: totalPages = Math.ceil(data.blogs.length / quantityBlogs);
-
 	function changePage(page) {
 		currentPage = page;
 	}
@@ -22,11 +22,7 @@
 		</a>
 	{/each}
 </section>
-<div class="pagination">
-	{#each Array(totalPages) as item, index}
-		<button on:click={() => changePage(index + 1)}>{index + 1}</button>
-	{/each}
-</div>
+<Pagination {totalPages} {changePage} />
 
 <style>
 	section {
@@ -53,11 +49,5 @@
 	.title {
 		width: 45%;
 		margin: 4px auto 0 auto;
-	}
-	.pagination {
-		display: flex;
-		justify-content: space-around;
-		width: 30%;
-		margin: 24px auto 0 auto;
 	}
 </style>
