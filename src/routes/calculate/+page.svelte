@@ -1,9 +1,8 @@
 <script>
-	import { DateTime } from 'luxon';
 	import { onMount } from 'svelte';
 	import { t } from '$lib/dictionary/index.js';
 	export let data;
-	let timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
 
 	let numberOne = 0;
 	let numberTwo = 0;
@@ -13,7 +12,7 @@
 	const convertData = (data) => {
 		return data.map((item) => ({
 			result: item.result,
-			time: DateTime.fromISO(item.createdAt, { zone: timeZone }).toFormat('yyyy-MM-dd HH:mm')
+			time: item.createdAt
 		}));
 	};
 
@@ -66,7 +65,8 @@
 	{/if}
 </div>
 
-<style>
+<style >
+
 	.history-list {
 		list-style-type: none;
 		padding: 0;
