@@ -3,7 +3,6 @@
 	import { t } from '$lib/dictionary/index.js';
 	export let data;
 
-
 	let numberOne = 0;
 	let numberTwo = 0;
 	let history = [];
@@ -12,7 +11,7 @@
 	const convertData = (data) => {
 		return data.map((item) => ({
 			result: item.result,
-			time: item.createdAt
+			time: new Date(item.createdAt).toISOString().split('T').join(' ').slice(0, 19)
 		}));
 	};
 
@@ -65,8 +64,7 @@
 	{/if}
 </div>
 
-<style >
-
+<style>
 	.history-list {
 		list-style-type: none;
 		padding: 0;

@@ -1,11 +1,8 @@
 <script>
 	import { t } from '$lib/dictionary/index.js';
-
 </script>
 
 <div>{$t('home.home_content')}</div>
-
-
 
 <style>
 	div {
