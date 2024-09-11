@@ -23,7 +23,7 @@
 		<h2>{blog.title}</h2>
 		<time>{date}</time>
 	</header>
-	<article>{blog.description}</article>
+	<article>{blog.descriptionseo}</article>
 	<article>{@html text}</article>
 </section>
 
