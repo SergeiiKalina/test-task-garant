@@ -17,8 +17,8 @@ export async function uploadPhoto(file){
         }
 
         const data = await response.json();
-        console.log(data);
-        return data; 
+       
+        return data.data.image.url; 
 
 }
 
