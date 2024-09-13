@@ -1,5 +1,30 @@
 import { writable } from "svelte/store";
-export const hex = writable("#000000")
+import { LoremIpsum } from 'lorem-ipsum';
+
+export const currentIndex = writable( null)
+export const startSymbol = writable( null)
+export const endSymbol = writable( null)
+export const  togglePPopup  =writable(false)
+export const  toggleListPopup  =writable(false)
+export const  toggleImgPopup  =writable(false)
+export const  toggleAPopup  =writable(false)
+export const lorem = new LoremIpsum({
+    sentencesPerParagraph: {
+        max: 8,
+        min: 4
+    },
+    wordsPerSentence: {
+        max: 16,
+        min: 4
+    }
+});
+
+export const value = writable([
+    {
+        tag: `<p style="cursor: pointer;">...</p>`,
+        content: lorem.generateParagraphs(1)
+    }
+])
 
 export async function uploadPhoto(file){
     if(!file) return 
@@ -21,4 +46,5 @@ export async function uploadPhoto(file){
         return data.data.image.url; 
 
 }
+
 

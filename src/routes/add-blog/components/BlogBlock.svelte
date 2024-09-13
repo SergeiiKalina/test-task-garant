@@ -1,0 +1,52 @@
+<script>
+	import { toggleAPopup } from '../store.js';
+	export let item;
+	export let index;
+	export let editableEl;
+	export let textForChanges;
+	export let handleDragStart;
+	export let handleDrop;
+	export let draggedIndex;
+
+	const addA = () => {
+		if (!textForChanges && currentIndex === null) return;
+		$toggleAPopup = true;
+	};
+</script>
+
+<div
+	id={'chunk-' + index}
+	class="draggable-block"
+	role="listitem"
+	draggable="true"
+	on:dragstart={(e) => handleDragStart(e, index)}
+	on:drop={(e) => handleDrop(e, index)}
+	on:dragover={(e) => e.preventDefault()}
+	aria-grabbed={index === draggedIndex}
+>
+	<button
+		on:click={(e) => {
+			const block = e.target.closest('.draggable-block');
+			block.draggable = false;
+			editableEl = index;
+		}}>edit</button
+	>
+	{#if editableEl === index}
+		<button
+			on:click={(e) => {
+				addA();
+			}}>add link</button
+		>
+	{/if}
+	{@html item.tag.replace('...', item.content)}
+</div>
+
+<style>
+	div[role='listitem'] {
+		position: relative;
+		border: 1px solid #ccc;
+		padding: 8px;
+		margin: 4px 0;
+		cursor: move;
+	}
+</style>
