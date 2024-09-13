@@ -1,6 +1,7 @@
 <script>
 	import { uploadPhoto } from './store.js';
 	import { LoremIpsum } from 'lorem-ipsum';
+	import { onMount } from 'svelte';
 	const lorem = new LoremIpsum({
 		sentencesPerParagraph: {
 			max: 8,
@@ -12,11 +13,11 @@
 		}
 	});
 
-	let currentItem = null;
+	let editableEl = null;
 	let title = '';
 	let paragraph = '';
-	let selectionStart = 0;
-	let selectionEnd = 0;
+	let currentIndex =  null
+	let textForChanges = ''
 	let toggleImgPopup = false;
 	let toggleAPopup = false;
 	let togglePPopup = false;
@@ -56,9 +57,8 @@
 		togglePPopup = false;
 	};
 
-	const addA = (currentItem) => {
-		console.log(currentItem);
-		if (selectionStart === selectionEnd) return;
+	const addA = () => {
+		if(!textForChanges && currentIndex === null) return
 		toggleAPopup = true;
 	};
 
@@ -85,6 +85,30 @@
 			console.log('Selected text:', selectedText);
 		}
 	}
+
+
+onMount(() => {
+    const container = document.querySelector('.container');
+
+    container.addEventListener('mouseup', () => {
+        const selection = document.getSelection();
+        if (selection.rangeCount > 0) {
+            const range = selection.getRangeAt(0);
+            const selectedText = selection.toString();
+            if (selectedText) {
+                const selectedElement = range.commonAncestorContainer.nodeType === 3 
+                    ? range.commonAncestorContainer.parentElement 
+                    : range.commonAncestorContainer;
+                
+              currentIndex =  selectedElement.closest('.draggable-block').id.split('-')[1] 
+			  textForChanges  = selectedText
+			
+            }
+        }
+    });
+
+});
+
 </script>
 
 <div class="container">
@@ -105,11 +129,12 @@
 			}}>Add image</button
 		>
 	</section>
-	<section class="preview_block">
+	<section class="preview_block" id="list">
 		{#if title}<div>{@html visibleTitle}</div>{/if}
-		<div role="list">
+		<div >
 			{#each value as item, index}
 				<div
+				id={"chunk-" + index}
 					class="draggable-block"
 					role="listitem"
 					draggable="true"
@@ -122,16 +147,18 @@
 						on:click={(e) => {
 							const block = e.target.closest('.draggable-block');
 							block.draggable = false;
+							editableEl = index
 						}}>edit</button
 					>
+					{#if editableEl === index}
 					<button
-						on:click={(e) => {
-							const block = e.target.closest('.draggable-block');
-							currentItem = block;
-							addA(currentItem);
-							// block.draggable = true;
-						}}>add link</button
-					>
+					on:click={(e) => {
+						addA()
+						
+					
+					}}>add link</button
+				>
+					{/if}
 					{@html item}
 				</div>
 			{/each}
@@ -229,13 +256,10 @@
 
 			<button
 				on:click={() => {
-					const selectionText = value.substring(selectionStart, selectionEnd);
-					const selectionTextWithTag = `<a href="${aHref}">${selectionText}</a>`;
-					value =
-						value.substring(0, selectionStart) +
-						selectionTextWithTag +
-						value.substring(selectionEnd);
-					toggleAPopup = false;
+				 value[currentIndex] = value[currentIndex].replace(textForChanges, `<a href=${aHref}> ${textForChanges} </a>`)
+						document.querySelectorAll('.draggable-block').forEach(el => el.draggable = false)
+						toggleAPopup = false;
+						editableEl = null
 				}}>ADD HREF</button
 			>
 		</div>
@@ -259,6 +283,7 @@
 		width: 150px;
 		height: 30px;
 		border-radius: 12px;
+		color: white;
 	}
 	.p-popup {
 		position: relative;
