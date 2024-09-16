@@ -173,15 +173,15 @@
 		$generalObjectBlog = { ...$generalObjectBlog, text: HTML, puretext: pureText };
 		let { descriptionSEO, ...newObj } = $generalObjectBlog;
 
-		fetch('http://18.212.195.234:3000/blogs', {
+		const response = await fetch('http://localhost:3000/blogs', {
 			method: 'POST',
-			body: JSON.stringify(newObj),
 			headers: {
 				'Content-Type': 'application/json'
-			}
-		})
-			.then((res) => res.json())
-			.then((res) => console.log(res));
+			},
+			body: JSON.stringify(newObj)
+		});
+
+		console.log(await response.json());
 	};
 </script>
 
