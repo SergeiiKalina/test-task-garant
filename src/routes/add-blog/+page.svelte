@@ -176,12 +176,16 @@
 		const response = await fetch('http://localhost:3000/blogs', {
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/json'
+				'Content-Type': 'application/json',
+				Prefer: 'return=representation'
 			},
 			body: JSON.stringify(newObj)
 		});
 
-		console.log(await response.json());
+		if (response.ok) {
+			const result = await response.json();
+			alert(`${result[0].title} Blog created`);
+		}
 	};
 </script>
 
