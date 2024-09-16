@@ -7,8 +7,9 @@
 		width: 100dvw;
 		height: 100dvh;
 		position: absolute;
-		top: 0;
-		left: 0;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
 		background-color: rgba(0, 0, 0, 0.5);
 		display: flex;
 		justify-content: center;

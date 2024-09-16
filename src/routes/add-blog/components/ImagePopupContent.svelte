@@ -1,5 +1,6 @@
 <script>
-	import { toggleImgPopup, value, uploadPhoto } from '../store.js';
+	import { toggleImgPopup, value, uploadPhoto, flagMainImg, generalObjectBlog } from '../store.js';
+	$: console.log($generalObjectBlog);
 	let imgSrc = '';
 </script>
 
@@ -12,13 +13,18 @@
 />
 <button
 	on:click={() => {
-		$value = [
-			...$value,
-			{
-				tag: `<div style="margin-top: 24px;">...</div>`,
-				content: `<img width="100%" src="${imgSrc}" alt="pictures"/>`
-			}
-		];
+		if ($flagMainImg) {
+			$generalObjectBlog = { ...$generalObjectBlog, image: imgSrc, background_image: imgSrc };
+			$flagMainImg = false;
+		} else {
+			$value = [
+				...$value,
+				{
+					tag: `<div style="margin-top: 24px;">...</div>`,
+					content: `<img width="100%" src="${imgSrc}" alt="pictures"/>`
+				}
+			];
+		}
 		$toggleImgPopup = false;
 	}}>ADD</button
 >

@@ -9,40 +9,29 @@
 		currentIndex,
 		startSymbol,
 		endSymbol,
-		editableEl
+		editableEl,
+		indexLi,
+		toggleTitlePopup,
+		toggleSeoAndOtherPopup,
+		generalObjectBlog
 	} from './store.js';
 	import ButtonBlock from './components/ButtonBlock.svelte';
-	import BlogBlock from './components/BlogBlock.svelte';
 	import ListPopupContent from './components/ListPopupContent.svelte';
 	import PPopupContent from './components/PPopupContent.svelte';
 	import PopupBackground from './components/PopupBackground.svelte';
 	import BigWindowPopup from './components/BigWindowPopup.svelte';
 	import MiniWindowPopup from './components/MiniWindowPopup.svelte';
 	import ImagePopupContent from './components/ImagePopupContent.svelte';
-	import APopupContent from './APopupContent.svelte';
+	import APopupContent from './components/APopupContent.svelte';
+	import ToolTips from './components/ToolTips.svelte';
+	import Preview from './components/Preview.svelte';
+	import TitlePopup from './components/TitlePopup.svelte';
+	import SeoAndOtherPopup from './components/SeoAndOtherPopup.svelte';
 
-	let title = '';
 	let textForChanges = null;
 	let toggleToolTip = true;
 	let positionMouseX = null;
 	let positionMouseY = null;
-	$: visibleTitle = `<h1>${title}</h1>`;
-	let draggedIndex = null;
-
-	function handleDragStart(e, index) {
-		draggedIndex = index;
-		e.dataTransfer.effectAllowed = 'move';
-	}
-
-	function handleDrop(e, index) {
-		e.preventDefault();
-		if (draggedIndex !== null && draggedIndex !== index) {
-			const draggedItem = $value[draggedIndex];
-			$value = $value.filter((_, i) => i !== draggedIndex);
-
-			$value = [...$value.slice(0, index), draggedItem, ...$value.slice(index)];
-		}
-	}
 
 	function removeHtmlTags(html) {
 		return html.replace(/<[^>]*>/g, '');
@@ -64,6 +53,7 @@
 
 		function checkSelectedText() {
 			const selection = document.getSelection();
+
 			if (selection.rangeCount > 0) {
 				const range = selection.getRangeAt(0);
 				const selectedText = selection.toString();
@@ -73,6 +63,9 @@
 							? range.commonAncestorContainer.parentElement
 							: range.commonAncestorContainer;
 
+					if (selectedElement.hasAttribute('data-index')) {
+						$indexLi = selectedElement.getAttribute('data-index');
+					}
 					$currentIndex = selectedElement.closest('.draggable-block').id.split('-')[1];
 					textForChanges = selectedText;
 
@@ -112,7 +105,7 @@
 		};
 	});
 
-	function addStrong() {
+	function addTagStrong() {
 		const content = $value[$currentIndex].content;
 		let index = 0;
 		let startTag = false;
@@ -141,27 +134,61 @@
 			result += '</a>';
 		}
 
-		$value[$currentIndex] = {
-			...$value[$currentIndex],
-			content: result
-		};
+		if ($indexLi) {
+			const regex = new RegExp(`<li\\s+data-index="${$indexLi}">(.*?)<\/li>`, 'g');
+
+			const modifiedContent = content.replace(regex, (match, p1) => {
+				const beforeText = p1.slice(0, $startSymbol);
+				const afterText = p1.slice($endSymbol);
+				const text = p1.slice($startSymbol, $endSymbol);
+				return `<li data-index="${$indexLi}">${beforeText}<strong>${text}</strong>${afterText}</li>`;
+			});
+			$value[$currentIndex].content = modifiedContent;
+			$indexLi = null;
+		} else {
+			$value[$currentIndex].content = result;
+		}
 
 		document.querySelectorAll('.draggable-block').forEach((el) => (el.draggable = false));
 		$toggleAPopup = false;
 		$editableEl = null;
 	}
+
+	const addUrl = () => {
+		const tooltip = document.querySelector('.tooltip-container');
+		$toggleAPopup = true;
+		tooltip.style.opacity = 0;
+		tooltip.style.visibility = 'hidden';
+	};
+	const addStrong = () => {
+		addTagStrong();
+		const tooltip = document.querySelector('.tooltip-container');
+		tooltip.style.opacity = 0;
+		tooltip.style.visibility = 'hidden';
+	};
+
+	const sendBlog = async () => {
+		const HTML = $value.map((el) => el.tag.replace('...', el.content)).join('');
+		const pureText = removeHtmlTags(HTML);
+		$generalObjectBlog = { ...$generalObjectBlog, text: HTML, puretext: pureText };
+		let { descriptionSEO, ...newObj } = $generalObjectBlog;
+
+		fetch('http://18.212.195.234:3000/blogs', {
+			method: 'POST',
+			body: JSON.stringify(newObj),
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		})
+			.then((res) => res.json())
+			.then((res) => console.log(res));
+	};
 </script>
 
 <div class="container">
 	<ButtonBlock />
-	<section class="preview_block" id="list">
-		{#if title}{@html visibleTitle}{/if}
-		<div>
-			{#each $value as item, index}
-				<BlogBlock {item} {index} {handleDragStart} {handleDrop} {draggedIndex} />
-			{/each}
-		</div>
-	</section>
+	<Preview />
+	<button on:click={sendBlog}>send</button>
 </div>
 {#if $toggleListPopup}<PopupBackground>
 		<BigWindowPopup>
@@ -185,50 +212,19 @@
 		</MiniWindowPopup>
 	</PopupBackground>
 {/if}
+{#if $toggleTitlePopup}<PopupBackground>
+		<MiniWindowPopup><TitlePopup /></MiniWindowPopup>
+	</PopupBackground>
+{/if}
+{#if $toggleSeoAndOtherPopup}<PopupBackground>
+		<BigWindowPopup><SeoAndOtherPopup /></BigWindowPopup>
+	</PopupBackground>
+{/if}
 {#if toggleToolTip}
-	<div class="tooltip-container">
-		<button
-			on:click={() => {
-				const tooltip = document.querySelector('.tooltip-container');
-				$toggleAPopup = true;
-				tooltip.style.opacity = 0;
-				tooltip.style.visibility = 'hidden';
-			}}>Add href</button
-		>
-		<button
-			on:click={() => {
-				addStrong();
-				const tooltip = document.querySelector('.tooltip-container');
-				tooltip.style.opacity = 0;
-				tooltip.style.visibility = 'hidden';
-			}}>Add strong</button
-		>
-	</div>
+	<ToolTips {addUrl} {addStrong} />
 {/if}
 
 <style>
-	.preview_block {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		flex-direction: column;
-		max-width: 75%;
-		height: 100%;
-		margin-top: 36px;
-	}
-	.tooltip-container {
-		display: flex;
-		justify-content: space-evenly;
-		position: absolute;
-		width: 200px;
-		height: 50px;
-		background-color: aqua;
-		border-radius: 20px;
-		opacity: 0;
-		visibility: hidden;
-		transition: all 500ms;
-	}
-
 	.container {
 		display: flex;
 		flex-direction: column;

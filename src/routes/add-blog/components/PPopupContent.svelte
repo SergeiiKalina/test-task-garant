@@ -1,5 +1,6 @@
 <script>
 	import { togglePPopup, lorem, value } from '../store.js';
+	import CloseButton from './CloseButton.svelte';
 
 	let paragraph = '';
 
@@ -14,15 +15,13 @@
 		];
 		$togglePPopup = false;
 	};
+	const closePopup = () => {
+		$togglePPopup = false;
+	};
 </script>
 
-<button
-	class="button-popup-close"
-	type="button"
-	on:click={() => {
-		$togglePPopup = false;
-	}}>X</button
->
+<CloseButton {closePopup} />
+
 <h2>Add Paragraph</h2>
 <button
 	on:click={() => {
@@ -41,12 +40,6 @@
 >
 
 <style>
-	.button-popup-close {
-		position: absolute;
-		top: 10px;
-		right: 10px;
-		color: red;
-	}
 	textarea {
 		margin: 12px 0;
 	}

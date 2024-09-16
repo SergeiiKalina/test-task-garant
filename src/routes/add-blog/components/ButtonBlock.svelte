@@ -1,8 +1,29 @@
 <script>
-	import { togglePPopup, toggleListPopup, toggleImgPopup } from '../store.js';
+	import {
+		togglePPopup,
+		toggleListPopup,
+		toggleImgPopup,
+		toggleTitlePopup,
+		toggleSeoAndOtherPopup,
+		flagMainImg,
+		generalObjectBlog
+	} from '../store.js';
+
+	$: console.log($generalObjectBlog);
 </script>
 
 <section class="block-add-blocks">
+	<button
+		on:click={() => {
+			$toggleImgPopup = true;
+			$flagMainImg = true;
+		}}>Add main image</button
+	>
+	<button
+		on:click={() => {
+			$toggleTitlePopup = true;
+		}}>Add Title</button
+	>
 	<button
 		on:click={() => {
 			$togglePPopup = true;
@@ -18,6 +39,20 @@
 			$toggleImgPopup = true;
 		}}>Add image</button
 	>
+	<button
+		on:click={() => {
+			$toggleSeoAndOtherPopup = true;
+		}}>Add Seo and Other</button
+	>
+	<select
+		on:change={(e) => {
+			$generalObjectBlog = { ...$generalObjectBlog, tab: e.target.value };
+		}}
+	>
+		<option value="article">article</option>
+		<option value="new">new</option>
+		<option value="motivation">motivation</option>
+	</select>
 </section>
 
 <style>

@@ -1,12 +1,10 @@
 <script>
+	import { editableEl } from '../store.js';
 	export let item;
 	export let index;
-	export let editableEl;
 	export let handleDragStart;
 	export let handleDrop;
 	export let draggedIndex;
-
-	
 </script>
 
 <div
@@ -23,7 +21,7 @@
 		on:click={(e) => {
 			const block = e.target.closest('.draggable-block');
 			block.draggable = false;
-			editableEl = index;
+			$editableEl = index;
 		}}>edit</button
 	>
 	{@html item.tag.replace('...', item.content)}

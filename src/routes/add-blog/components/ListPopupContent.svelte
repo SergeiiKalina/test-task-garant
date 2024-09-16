@@ -1,19 +1,15 @@
 <script>
 	import { toggleListPopup, value } from '../store.js';
-	let inputList = ['item-1'];
+
+	let inputList = [{ id: 'item-1' }];
 	let isNumeric = false;
 
-	const addList = (e) => {
-		const listArr = [];
-		const form = new FormData(e.target);
-		for (const [key, value] of form.entries()) {
-			listArr.push(value);
-		}
+	const addList = () => {
 		$value = [
 			...$value,
 			{
 				tag: isNumeric ? `<ol>...</ol>` : `<ul>...</ul>`,
-				content: `${listArr.map((el) => `<li>${el}</li>`).join('')}`
+				content: `${inputList.map((el, index) => `<li data-index="${index}">${el.content}</li>`).join('')}`
 			}
 		];
 		$toggleListPopup = false;
@@ -41,14 +37,16 @@
 </section>
 
 <form class="block-list" on:submit={addList}>
-	{#each inputList as item}
-		<label>{item}<input type="text" name={item} /></label>
+	{#each inputList as item, index}
+		<label
+			>{item.id}<input type="text" name={item.id} bind:value={inputList[index].content} />
+		</label>
 	{/each}
 	<button
 		type="button"
 		class="add-field"
 		on:click={() => {
-			inputList = [...inputList, `item-${inputList.length + 1}`];
+			inputList = [...inputList, { id: `item-${inputList.length + 1}` }];
 		}}>+</button
 	>
 	<button type="submit"> ADD All list</button>
