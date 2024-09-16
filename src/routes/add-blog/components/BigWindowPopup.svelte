@@ -3,7 +3,7 @@
 <style>
 	.big-popup {
 		position: relative;
-		width: 50%;
+		min-width: 50%;
 		height: 50%;
 		background-color: rgb(251, 255, 0);
 		display: flex;
@@ -11,5 +11,6 @@
 		justify-content: center;
 		align-items: center;
 		border-radius: 20px;
+		padding-bottom: 20px;
 	}
 </style>

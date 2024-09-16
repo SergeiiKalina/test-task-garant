@@ -47,4 +47,7 @@
 		right: 10px;
 		color: red;
 	}
+	textarea {
+		margin: 12px 0;
+	}
 </style>

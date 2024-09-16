@@ -8,6 +8,7 @@ export const  togglePPopup  =writable(false)
 export const  toggleListPopup  =writable(false)
 export const  toggleImgPopup  =writable(false)
 export const  toggleAPopup  =writable(false)
+export const editableEl = writable(null);
 export const lorem = new LoremIpsum({
     sentencesPerParagraph: {
         max: 8,
@@ -22,7 +23,10 @@ export const lorem = new LoremIpsum({
 export const value = writable([
     {
         tag: `<p style="cursor: pointer;">...</p>`,
-        content: lorem.generateParagraphs(1)
+        content: `Ea sint et exercitation dolor ut laborum culpa Lorem irure culpa esse. Commodo aliqua minim 
+        laboris ullamco id quis ea excepteur velit magna ea. Nisi officia laborum sunt voluptate enim sit magna dolor laborum ex aute. 
+        Reprehenderit Lorem qui consectetur dolor eu ea officia laboris id amet consectetur et cupidatat. Dolor in aute tempor fugiat qui irure sint mollit magna. Incididunt mollit aliqua commodo irure officia occaecat dolore nisi exercitation do. 
+        Excepteur nostrud fugiat minim ex excepteur ipsum esse veniam nulla consequat eu cillum fugiat nostrud do.`
     }
 ])
 

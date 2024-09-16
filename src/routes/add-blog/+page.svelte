@@ -6,7 +6,10 @@
 		toggleImgPopup,
 		toggleAPopup,
 		value,
-		currentIndex
+		currentIndex,
+		startSymbol,
+		endSymbol,
+		editableEl
 	} from './store.js';
 	import ButtonBlock from './components/ButtonBlock.svelte';
 	import BlogBlock from './components/BlogBlock.svelte';
@@ -18,15 +21,11 @@
 	import ImagePopupContent from './components/ImagePopupContent.svelte';
 	import APopupContent from './APopupContent.svelte';
 
-	// strong
-	// numeric list
-	// br
-
-	let editableEl = null;
 	let title = '';
-
 	let textForChanges = null;
-
+	let toggleToolTip = true;
+	let positionMouseX = null;
+	let positionMouseY = null;
 	$: visibleTitle = `<h1>${title}</h1>`;
 	let draggedIndex = null;
 
@@ -52,7 +51,18 @@
 	onMount(() => {
 		const container = document.querySelector('.container');
 
-		container.addEventListener('mouseup', () => {
+		function checkDeselectedText() {
+			const selection = document.getSelection();
+			const selectedText = selection.toString();
+
+			if (!selectedText) {
+				const tooltip = document.querySelector('.tooltip-container');
+				tooltip.style.opacity = 0;
+				tooltip.style.visibility = 'hidden';
+			}
+		}
+
+		function checkSelectedText() {
 			const selection = document.getSelection();
 			if (selection.rangeCount > 0) {
 				const range = selection.getRangeAt(0);
@@ -72,13 +82,74 @@
 
 					const startIndex = preRange.toString().length;
 					const endIndex = startIndex + selectedText.length;
+					$startSymbol = startIndex;
+					$endSymbol = endIndex;
 
-					startSymbol = startIndex;
-					endSymbol = endIndex;
+					if (textForChanges && $currentIndex !== null) {
+						const tooltip = document.querySelector('.tooltip-container');
+						tooltip.style.top = positionMouseY - 60 + 'px';
+						tooltip.style.left = positionMouseX + 'px';
+						tooltip.style.opacity = 1;
+						tooltip.style.visibility = 'visible';
+					}
 				}
 			}
-		});
+		}
+
+		function checkMousePosition(e) {
+			positionMouseX = e.clientX;
+			positionMouseY = e.clientY;
+		}
+
+		document.addEventListener('selectionchange', checkDeselectedText);
+		container.addEventListener('mouseup', checkSelectedText);
+		document.addEventListener('mousemove', checkMousePosition);
+
+		return () => {
+			document.removeEventListener('selectionchange', checkDeselectedText);
+			container.removeEventListener('mouseup', checkSelectedText);
+			document.removeEventListener('mousemove', checkMousePosition);
+		};
 	});
+
+	function addStrong() {
+		const content = $value[$currentIndex].content;
+		let index = 0;
+		let startTag = false;
+		let result = '';
+
+		for (let i = 0; i < content.length; i++) {
+			if (content[i] === '<') {
+				startTag = true;
+			}
+			if (!startTag) {
+				if (index === $startSymbol) {
+					result += `<strong>`;
+				}
+				if (index === $endSymbol) {
+					result += '</strong>';
+				}
+				index++;
+			}
+			result += content[i];
+			if (content[i] === '>') {
+				startTag = false;
+			}
+		}
+
+		if (index === $endSymbol) {
+			result += '</a>';
+		}
+
+		$value[$currentIndex] = {
+			...$value[$currentIndex],
+			content: result
+		};
+
+		document.querySelectorAll('.draggable-block').forEach((el) => (el.draggable = false));
+		$toggleAPopup = false;
+		$editableEl = null;
+	}
 </script>
 
 <div class="container">
@@ -87,15 +158,7 @@
 		{#if title}{@html visibleTitle}{/if}
 		<div>
 			{#each $value as item, index}
-				<BlogBlock
-					{item}
-					{index}
-					{editableEl}
-					{textForChanges}
-					{handleDragStart}
-					{handleDrop}
-					{draggedIndex}
-				/>
+				<BlogBlock {item} {index} {handleDragStart} {handleDrop} {draggedIndex} />
 			{/each}
 		</div>
 	</section>
@@ -122,6 +185,26 @@
 		</MiniWindowPopup>
 	</PopupBackground>
 {/if}
+{#if toggleToolTip}
+	<div class="tooltip-container">
+		<button
+			on:click={() => {
+				const tooltip = document.querySelector('.tooltip-container');
+				$toggleAPopup = true;
+				tooltip.style.opacity = 0;
+				tooltip.style.visibility = 'hidden';
+			}}>Add href</button
+		>
+		<button
+			on:click={() => {
+				addStrong();
+				const tooltip = document.querySelector('.tooltip-container');
+				tooltip.style.opacity = 0;
+				tooltip.style.visibility = 'hidden';
+			}}>Add strong</button
+		>
+	</div>
+{/if}
 
 <style>
 	.preview_block {
@@ -131,7 +214,21 @@
 		flex-direction: column;
 		max-width: 75%;
 		height: 100%;
+		margin-top: 36px;
 	}
+	.tooltip-container {
+		display: flex;
+		justify-content: space-evenly;
+		position: absolute;
+		width: 200px;
+		height: 50px;
+		background-color: aqua;
+		border-radius: 20px;
+		opacity: 0;
+		visibility: hidden;
+		transition: all 500ms;
+	}
+
 	.container {
 		display: flex;
 		flex-direction: column;

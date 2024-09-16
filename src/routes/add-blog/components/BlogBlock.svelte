@@ -1,17 +1,12 @@
 <script>
-	import { toggleAPopup } from '../store.js';
 	export let item;
 	export let index;
 	export let editableEl;
-	export let textForChanges;
 	export let handleDragStart;
 	export let handleDrop;
 	export let draggedIndex;
 
-	const addA = () => {
-		if (!textForChanges && currentIndex === null) return;
-		$toggleAPopup = true;
-	};
+	
 </script>
 
 <div
@@ -31,13 +26,6 @@
 			editableEl = index;
 		}}>edit</button
 	>
-	{#if editableEl === index}
-		<button
-			on:click={(e) => {
-				addA();
-			}}>add link</button
-		>
-	{/if}
 	{@html item.tag.replace('...', item.content)}
 </div>
 

@@ -1,5 +1,5 @@
 <script>
-	import { toggleAPopup, value, currentIndex, startSymbol, endSymbol } from './store.js';
+	import { toggleAPopup, value, currentIndex, startSymbol, endSymbol,editableEl } from './store.js';
 	let aHref = '';
 
 	function addHref(aHref) {
@@ -16,7 +16,7 @@
 				if (index === $startSymbol) {
 					result += `<a href="${aHref}">`;
 				}
-				if (index === e$ndSymbol) {
+				if (index === $endSymbol) {
 					result += '</a>';
 				}
 				index++;
@@ -35,7 +35,7 @@
 
 		document.querySelectorAll('.draggable-block').forEach((el) => (el.draggable = false));
 		$toggleAPopup = false;
-		editableEl = null;
+		$editableEl = null;
 	}
 </script>
 
