@@ -13,7 +13,8 @@
 		indexLi,
 		toggleTitlePopup,
 		toggleSeoAndOtherPopup,
-		generalObjectBlog
+		generalObjectBlog,
+		textForChanges
 	} from './store.js';
 	import ButtonBlock from './components/ButtonBlock.svelte';
 	import ListPopupContent from './components/ListPopupContent.svelte';
@@ -28,8 +29,6 @@
 	import TitlePopup from './components/TitlePopup.svelte';
 	import SeoAndOtherPopup from './components/SeoAndOtherPopup.svelte';
 
-	let textForChanges = null;
-	let toggleToolTip = true;
 	let positionMouseX = null;
 	let positionMouseY = null;
 
@@ -58,16 +57,24 @@
 				const range = selection.getRangeAt(0);
 				const selectedText = selection.toString();
 				if (selectedText) {
-					const selectedElement =
+					let selectedElement =
 						range.commonAncestorContainer.nodeType === 3
 							? range.commonAncestorContainer.parentElement
 							: range.commonAncestorContainer;
+
+					if (selectedElement.tagName === 'STRONG') {
+						if (!selectedElement.closest('p')) {
+							selectedElement = selectedElement.closest('li');
+						} else {
+							selectedElement = selectedElement.closest('p');
+						}
+					}
 
 					if (selectedElement.hasAttribute('data-index')) {
 						$indexLi = selectedElement.getAttribute('data-index');
 					}
 					$currentIndex = selectedElement.closest('.draggable-block').id.split('-')[1];
-					textForChanges = selectedText;
+					$textForChanges = selectedText;
 
 					const preRange = document.createRange();
 					preRange.setStart(selectedElement, 0);
@@ -78,7 +85,7 @@
 					$startSymbol = startIndex;
 					$endSymbol = endIndex;
 
-					if (textForChanges && $currentIndex !== null) {
+					if ($textForChanges && $currentIndex !== null) {
 						const tooltip = document.querySelector('.tooltip-container');
 						tooltip.style.top = positionMouseY - 60 + 'px';
 						tooltip.style.left = positionMouseX + 'px';
@@ -171,13 +178,18 @@
 		const HTML = $value.map((el) => el.tag.replace('...', el.content)).join('');
 		const pureText = removeHtmlTags(HTML);
 		$generalObjectBlog = { ...$generalObjectBlog, text: HTML, puretext: pureText };
-		let { descriptionSEO, ...newObj } = $generalObjectBlog;
-
-		const response = await fetch('http://18.212.195.234:3000/blogs', {
+		let newObj = {};
+		for (let key in $generalObjectBlog) {
+			newObj[`param_${key}`] = $generalObjectBlog[key];
+		}
+		const tokenRewrite =
+			'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoicmV3cml0ZXIiLCJ1c2VyX2lkIjo0fQ.ExcwIS5H6mGoGQOv6zX_4eND5hBzZ0k_R7Czyl5mBmY';
+		const response = await fetch('http://18.212.195.234:3000/rpc/create_new_blog', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				Prefer: 'return=representation'
+				Prefer: 'return=representation',
+				Authorization: `Bearer ${tokenRewrite}`
 			},
 			body: JSON.stringify(newObj)
 		});
@@ -224,9 +236,8 @@
 		<BigWindowPopup><SeoAndOtherPopup /></BigWindowPopup>
 	</PopupBackground>
 {/if}
-{#if toggleToolTip}
-	<ToolTips {addUrl} {addStrong} />
-{/if}
+
+<ToolTips {addUrl} {addStrong} />
 
 <style>
 	.container {

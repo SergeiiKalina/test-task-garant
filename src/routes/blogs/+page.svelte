@@ -16,7 +16,7 @@
 	{#each blogs as item, index}
 		<a href={`/blogs/${item.blog_id}`}>
 			<article>
-				<div><img {src} alt="any alt" /></div>
+				<div><img src={item.image.startsWith('https://') ? item.image : src} alt="any alt" /></div>
 				<div class="title">{item.title}</div>
 			</article>
 		</a>

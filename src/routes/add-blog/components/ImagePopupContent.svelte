@@ -1,6 +1,5 @@
 <script>
 	import { toggleImgPopup, value, uploadPhoto, flagMainImg, generalObjectBlog } from '../store.js';
-	$: console.log($generalObjectBlog);
 	let imgSrc = '';
 </script>
 

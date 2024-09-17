@@ -1,5 +1,5 @@
 <script>
-	import { value, title } from '../store.js';
+	import { value, title, generalObjectBlog } from '../store.js';
 	import BlogBlock from './BlogBlock.svelte';
 	let draggedIndex = null;
 
@@ -20,6 +20,9 @@
 </script>
 
 <section class="preview_block" id="list">
+	{#if $generalObjectBlog.image}<div class="main-img-container">
+			<img src={$generalObjectBlog.image} alt="main" width="50%" />
+		</div>{/if}
 	{#if $title}{@html $title}{/if}
 	<div>
 		{#each $value as item, index}
@@ -29,6 +32,11 @@
 </section>
 
 <style>
+	.main-img-container {
+		display: flex;
+		justify-content: center;
+		margin: 12px 0;
+	}
 	.preview_block {
 		display: flex;
 		align-items: center;

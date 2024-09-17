@@ -4,12 +4,18 @@
 	export let data;
 
 	const blog = data.blog[0];
-	const date = new Date(blog.date).toLocaleDateString('eu-CA', {
+	const date = new Date(blog.createat).toLocaleDateString('eu-CA', {
 		year: 'numeric',
 		month: '2-digit',
 		day: '2-digit'
 	});
-	let text = blog.text.replace(/src="[^"]*"/g, `src="${src2}"`);
+	let updatedText = blog.text.replace(/<img\s+[^>]*src="([^"]*)"/g, (match, p1) => {
+		if (p1.startsWith('https://')) {
+			return match;
+		} else {
+			return match.replace(p1, src2);
+		}
+	});
 </script>
 
 <svelte:head>
@@ -17,14 +23,17 @@
 	<meta property="og:description" content={blog.descriptionseo} />
 </svelte:head>
 
-<img {src} alt="any pictures" />
+<img
+	src={blog.background_image.startsWith('https://') ? blog.background_image : src}
+	alt="any pictures"
+/>
 <section>
 	<header>
 		<h2>{blog.title}</h2>
 		<time>{date}</time>
 	</header>
 	<article>{blog.descriptionseo}</article>
-	<article>{@html text}</article>
+	<article>{@html updatedText}</article>
 </section>
 
 <style>

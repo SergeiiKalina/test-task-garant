@@ -8,8 +8,6 @@
 		flagMainImg,
 		generalObjectBlog
 	} from '../store.js';
-
-	$: console.log($generalObjectBlog);
 </script>
 
 <section class="block-add-blocks">

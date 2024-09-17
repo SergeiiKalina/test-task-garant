@@ -1,7 +1,7 @@
 <script>
 	import { toggleListPopup, value } from '../store.js';
 
-	let inputList = [{ id: 'item-1' }];
+	let inputList = [{ id: 'item-1' }, { id: 'item-2' }];
 	let isNumeric = false;
 
 	const addList = () => {
@@ -28,8 +28,10 @@
 	<button
 		on:click={() => {
 			isNumeric = true;
-		}}>numeric</button
+		}}
+		class={`${isNumeric ? 'active' : ''}`}>numeric</button
 	><button
+		class={`${isNumeric ? '' : 'active'}`}
 		on:click={() => {
 			isNumeric = false;
 		}}>not numeric</button
@@ -53,6 +55,9 @@
 </form>
 
 <style>
+	.active {
+		background-color: green;
+	}
 	button[type='submit'] {
 		margin-top: 12px;
 	}

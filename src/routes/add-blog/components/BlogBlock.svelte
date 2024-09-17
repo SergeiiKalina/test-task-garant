@@ -5,13 +5,14 @@
 	export let handleDragStart;
 	export let handleDrop;
 	export let draggedIndex;
+	let isDraggable = true;
 </script>
 
 <div
 	id={'chunk-' + index}
 	class="draggable-block"
 	role="listitem"
-	draggable="true"
+	draggable={isDraggable}
 	on:dragstart={(e) => handleDragStart(e, index)}
 	on:drop={(e) => handleDrop(e, index)}
 	on:dragover={(e) => e.preventDefault()}
@@ -19,8 +20,19 @@
 >
 	<button
 		on:click={(e) => {
-			const block = e.target.closest('.draggable-block');
-			block.draggable = false;
+			const button = e.target;
+
+			isDraggable = !isDraggable;
+
+			if (isDraggable) {
+				const tooltip = document.querySelector('.tooltip-container');
+				tooltip.style.opacity = 0;
+				tooltip.style.visibility = 'hidden';
+				button.style.backgroundColor = '';
+			} else {
+				button.style.backgroundColor = 'green';
+			}
+
 			$editableEl = index;
 		}}>edit</button
 	>

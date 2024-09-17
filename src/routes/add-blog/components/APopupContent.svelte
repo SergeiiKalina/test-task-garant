@@ -9,48 +9,46 @@
 		indexLi
 	} from '../store.js';
 	import CloseButton from './CloseButton.svelte';
-	let aHref = '';
+	let url = '';
 
-	function addHref(aHref) {
-		const content = $value[$currentIndex].content;
-		let index = 0;
+	const parseString = (text, url) => {
 		let startTag = false;
+		let counter = 0;
 		let result = '';
-		for (let i = 0; i < content.length; i++) {
-			if (content[i] === '<') {
+
+		[...text].forEach((el) => {
+			if (el === '<') {
 				startTag = true;
 			}
 			if (!startTag) {
-				if (index === $startSymbol) {
-					result += `<a href="${aHref}">`;
+				if (counter === $startSymbol) {
+					result += `<a href="${url}">`;
 				}
-				if (index === $endSymbol) {
+				if (counter === $endSymbol) {
 					result += '</a>';
 				}
-				index++;
+				counter++;
 			}
-			result += content[i];
-			if (content[i] === '>') {
+			result += el;
+			if (el === '>') {
 				startTag = false;
 			}
-		}
+		});
+		return result;
+	};
 
-		if (index === $endSymbol) {
-			result += '</a>';
-		}
+	function addURL(url) {
+		const content = $value[$currentIndex].content;
+
 		if ($indexLi) {
 			const regex = new RegExp(`<li\\s+data-index="${$indexLi}">(.*?)<\/li>`, 'g');
-
 			const modifiedContent = content.replace(regex, (match, p1) => {
-				const beforeText = p1.slice(0, $startSymbol);
-				const afterText = p1.slice($endSymbol);
-				const text = p1.slice($startSymbol, $endSymbol);
-				return `<li data-index="${$indexLi}">${beforeText}<a href="${aHref}">${text}</a>${afterText}</li>`;
+				return `<li data-index="${$indexLi}">${parseString(p1, url)}</li>`;
 			});
 			$value[$currentIndex].content = modifiedContent;
 			$indexLi = null;
 		} else {
-			$value[$currentIndex].content = result;
+			$value[$currentIndex].content = parseString(content, url);
 		}
 
 		document.querySelectorAll('.draggable-block').forEach((el) => (el.draggable = false));
@@ -67,6 +65,6 @@
 
 <CloseButton {closePopup} />
 
-<input type="text" name="a-href" bind:value={aHref} />
+<input type="text" name="a-href" bind:value={url} />
 
-<button on:click={addHref}>ADD HREF</button>
+<button on:click={addURL}>ADD HREF</button>

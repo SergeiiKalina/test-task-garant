@@ -2,21 +2,24 @@ import { writable } from "svelte/store";
 import { LoremIpsum } from 'lorem-ipsum';
 
 export const generalObjectBlog = writable({})
-export const  flagMainImg  =writable(false)
+export const textForChanges = writable(null)
+export const flagMainImg  =writable(false)
 export const currentIndex = writable( null)
 export const startSymbol = writable( null)
 export const endSymbol = writable( null)
-export const  togglePPopup  =writable(false)
-export const  toggleListPopup  =writable(false)
-export const  toggleImgPopup  =writable(false)
-export const  toggleAPopup  =writable(false)
-export const  toggleTitlePopup  =writable(false)
-export const  toggleSeoAndOtherPopup  =writable(false)
+export const togglePPopup  =writable(false)
+export const toggleListPopup  =writable(false)
+export const toggleImgPopup  =writable(false)
+export const toggleAPopup  =writable(false)
+export const toggleTitlePopup  =writable(false)
+export const toggleSeoAndOtherPopup  =writable(false)
 export const editableEl = writable(null);
 export const indexLi = writable(null);
 export const title = writable('')
 export const titleseo = writable('')
 export const slug = writable('')
+
+
 export const lorem = new LoremIpsum({
     sentencesPerParagraph: {
         max: 8,
