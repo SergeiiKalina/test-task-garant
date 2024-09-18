@@ -15,7 +15,9 @@
 		toggleSeoAndOtherPopup,
 		generalObjectBlog,
 		textForChanges,
-		toggleSubtitle
+		toggleSubtitle,
+		removeHtmlTags,
+		toggleDeletePopup
 	} from './store.js';
 	import ButtonBlock from './components/ButtonBlock.svelte';
 	import ListPopupContent from './components/ListPopupContent.svelte';
@@ -30,13 +32,10 @@
 	import TitlePopup from './components/TitlePopup.svelte';
 	import SeoAndOtherPopup from './components/SeoAndOtherPopup.svelte';
 	import SubtitlePopup from './components/SubtitlePopup.svelte';
+	import DeletePopUp from './components/DeletePopUp.svelte';
 
 	let positionMouseX = null;
 	let positionMouseY = null;
-
-	function removeHtmlTags(html) {
-		return html.replace(/<[^>]*>/g, '');
-	}
 
 	onMount(() => {
 		const container = document.querySelector('.container');
@@ -161,6 +160,7 @@
 		document.querySelectorAll('.draggable-block').forEach((el) => (el.draggable = false));
 		$toggleAPopup = false;
 		$editableEl = null;
+		$currentIndex = null;
 	}
 
 	const addUrl = () => {
@@ -237,11 +237,16 @@
 	</PopupBackground>
 {/if}
 {#if $toggleTitlePopup}<PopupBackground>
-		<MiniWindowPopup><TitlePopup /></MiniWindowPopup>
+		<BigWindowPopup><TitlePopup /></BigWindowPopup>
 	</PopupBackground>
 {/if}
 {#if $toggleSeoAndOtherPopup}<PopupBackground>
 		<BigWindowPopup><SeoAndOtherPopup /></BigWindowPopup>
+	</PopupBackground>
+{/if}
+{#if $toggleDeletePopup}
+	<PopupBackground>
+		<MiniWindowPopup><DeletePopUp /></MiniWindowPopup>
 	</PopupBackground>
 {/if}
 

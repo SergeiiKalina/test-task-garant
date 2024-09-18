@@ -5,7 +5,7 @@
 		position: relative;
 		width: 30%;
 		height: 10%;
-		background-color: rgb(251, 255, 0);
+		background-color: rgb(0, 182, 76);
 		display: flex;
 		justify-content: center;
 		align-items: center;

@@ -1,5 +1,12 @@
 <script>
-	import { toggleImgPopup, value, uploadPhoto, flagMainImg, generalObjectBlog } from '../store.js';
+	import {
+		toggleImgPopup,
+		value,
+		uploadPhoto,
+		flagMainImg,
+		generalObjectBlog,
+		currentIndex
+	} from '../store.js';
 	let imgSrc = '';
 </script>
 
@@ -12,10 +19,8 @@
 />
 <button
 	on:click={() => {
-		if ($flagMainImg) {
+		if ($currentIndex === null) {
 			$generalObjectBlog = { ...$generalObjectBlog, image: imgSrc, background_image: imgSrc };
-			$flagMainImg = false;
-		} else {
 			$value = [
 				...$value,
 				{
@@ -23,7 +28,16 @@
 					content: `<img width="100%" src="${imgSrc}" alt="pictures"/>`
 				}
 			];
+		} else {
+			$generalObjectBlog = { ...$generalObjectBlog, image: imgSrc, background_image: imgSrc };
+			$value[$currentIndex] = {
+				tag: `<div style="margin-top: 24px;">...</div>`,
+				content: `<img width="100%" src="${imgSrc}" alt="pictures"/>`,
+				main: $currentIndex !== 0 ? false : true
+			};
 		}
+
+		$currentIndex = null;
 		$toggleImgPopup = false;
 	}}>ADD</button
 >

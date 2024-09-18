@@ -31,6 +31,7 @@
 		let index = 0;
 		let currentStep = 0;
 		let endTag = true;
+		console.log(blog.title);
 		[...blog.text].map((el, i) => {
 			if (el === '>' && !endTag) {
 				currentStep = i;
@@ -61,14 +62,19 @@
 				const imgTagRegex = /<img\s+([^>]*?)\/?>/i;
 				const withoutPreviousText = blog.text.slice(i, blog.text.length);
 
-				endTag = false;
+				const imgTagMatch = withoutPreviousText.match(imgTagRegex);
 
-				arr[index] = {
-					tag: '...',
-					content: withoutPreviousText
-				};
-				currentStep = i + withoutPreviousText.length;
-				index++;
+				if (imgTagMatch) {
+					endTag = false;
+
+					arr[index] = {
+						tag: '...',
+						content: imgTagMatch[0]
+					};
+
+					currentStep = i + imgTagMatch.index + imgTagMatch[0].length;
+					index++;
+				}
 			}
 			if (el === '<' && [...blog.text][i + 1] === 'u' && endTag) {
 				endTag = false;
@@ -149,12 +155,24 @@
 				str += el;
 			}
 		});
-		console.log(arr);
+
 		$slug = blog.slug;
-		$generalObjectBlog.image = blog.image;
 		$titleseo = blog.titleseo;
-		$title = `<h1>${blog.title}</h1>`;
 		$value = arr;
+
+		$value = [
+			{
+				tag: `<div style="margin-top: 24px;">...</div>`,
+				content: `<img width="100%" src="${blog.image}" alt="pictures"/>`,
+				main: true
+			},
+			{
+				tag: `<h1>...</h1>`,
+				content: blog.title,
+				main: true
+			},
+			...$value
+		];
 		goto('/add-blog');
 	}}>rewrite blog</button
 >

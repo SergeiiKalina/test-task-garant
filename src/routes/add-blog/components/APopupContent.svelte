@@ -54,6 +54,7 @@
 		document.querySelectorAll('.draggable-block').forEach((el) => (el.draggable = false));
 		$toggleAPopup = false;
 		$editableEl = null;
+		$currentIndex = null;
 	}
 
 	const closePopup = () => {

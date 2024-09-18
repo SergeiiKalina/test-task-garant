@@ -1,18 +1,21 @@
 <script>
-	import { togglePPopup, lorem, value } from '../store.js';
+	import { togglePPopup, lorem, value, paragraph, currentIndex } from '../store.js';
 	import CloseButton from './CloseButton.svelte';
 
-	let paragraph = '';
-
 	const addP = () => {
-		const pTextArea = document.querySelector('textarea');
-		$value = [
-			...$value,
-			{
-				tag: `<p style="cursor: pointer;">...</p>`,
-				content: pTextArea.value
-			}
-		];
+		if (currentIndex !== null) {
+			$value[$currentIndex].content = $paragraph;
+			$currentIndex = null;
+		} else {
+			$value = [
+				...$value,
+				{
+					tag: `<p style="cursor: pointer;">...</p>`,
+					content: $paragraph
+				}
+			];
+		}
+
 		$togglePPopup = false;
 	};
 	const closePopup = () => {
@@ -25,18 +28,18 @@
 <h2>Add Paragraph</h2>
 <button
 	on:click={() => {
-		paragraph = lorem.generateParagraphs(2);
+		$paragraph = lorem.generateParagraphs(2);
 	}}
 >
 	generate paragraph</button
 >
-<textarea name="paragraph" rows="20" cols="60" bind:value={paragraph}></textarea>
+<textarea name="paragraph" rows="20" cols="60" bind:value={$paragraph}></textarea>
 <button
 	on:click={() => {
 		addP();
 	}}
 >
-	ADD</button
+	{$currentIndex !== null ? 'Rewrite' : 'ADD'}</button
 >
 
 <style>

@@ -1,18 +1,26 @@
 <script>
-	import { toggleListPopup, value } from '../store.js';
+	import { toggleListPopup, value, inputList, currentIndex } from '../store.js';
 
-	let inputList = [{ id: 'item-1' }, { id: 'item-2' }];
 	let isNumeric = false;
 
 	const addList = () => {
-		$value = [
-			...$value,
-			{
+		if ($currentIndex !== null) {
+			$value[$currentIndex] = {
 				tag: isNumeric ? `<ol>...</ol>` : `<ul>...</ul>`,
-				content: `${inputList.map((el, index) => `<li data-index="${index}">${el.content}</li>`).join('')}`
-			}
-		];
+				content: `${$inputList.map((el, index) => `<li data-index="${index}">${el.content}</li>`).join('')}`
+			};
+		} else {
+			$value = [
+				...$value,
+				{
+					tag: isNumeric ? `<ol>...</ol>` : `<ul>...</ul>`,
+					content: `${$inputList.map((el, index) => `<li data-index="${index}">${el.content}</li>`).join('')}`
+				}
+			];
+		}
+
 		$toggleListPopup = false;
+		$currentIndex = null;
 	};
 </script>
 
@@ -39,16 +47,16 @@
 </section>
 
 <form class="block-list" on:submit={addList}>
-	{#each inputList as item, index}
+	{#each $inputList as item, index}
 		<label
-			>{item.id}<input type="text" name={item.id} bind:value={inputList[index].content} />
+			>{item.id}<input type="text" name={item.id} bind:value={$inputList[index].content} />
 		</label>
 	{/each}
 	<button
 		type="button"
 		class="add-field"
 		on:click={() => {
-			inputList = [...inputList, { id: `item-${inputList.length + 1}` }];
+			$inputList = [...$inputList, { id: `item-${$inputList.length + 1}` }];
 		}}>+</button
 	>
 	<button type="submit"> ADD All list</button>

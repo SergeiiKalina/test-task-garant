@@ -4,12 +4,17 @@
 	let draggedIndex = null;
 
 	function handleDragStart(e, index) {
+		if (index === 0 || index === 1) return;
+		console.log(index);
 		draggedIndex = index;
 		e.dataTransfer.effectAllowed = 'move';
 	}
-	console.log($value);
+
 	function handleDrop(e, index) {
 		e.preventDefault();
+		if (index === 0 || index === 1) {
+			draggedIndex = null;
+		}
 		if (draggedIndex !== null && draggedIndex !== index) {
 			const draggedItem = $value[draggedIndex];
 			$value = $value.filter((_, i) => i !== draggedIndex);
@@ -17,14 +22,9 @@
 			$value = [...$value.slice(0, index), draggedItem, ...$value.slice(index)];
 		}
 	}
-	$: console.log($generalObjectBlog);
 </script>
 
 <section class="preview_block" id="list">
-	{#if $generalObjectBlog.image}<div class="main-img-container">
-			<img src={$generalObjectBlog.image} alt="main" width="50%" />
-		</div>{/if}
-	{#if $title}{@html $title}{/if}
 	<div>
 		{#each $value as item, index}
 			<BlogBlock {item} {index} {handleDragStart} {handleDrop} {draggedIndex} />
@@ -33,11 +33,6 @@
 </section>
 
 <style>
-	.main-img-container {
-		display: flex;
-		justify-content: center;
-		margin: 12px 0;
-	}
 	.preview_block {
 		display: flex;
 		align-items: center;
