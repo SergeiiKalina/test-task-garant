@@ -6,7 +6,8 @@
 		toggleTitlePopup,
 		toggleSeoAndOtherPopup,
 		flagMainImg,
-		generalObjectBlog
+		generalObjectBlog,
+		toggleSubtitle
 	} from '../store.js';
 </script>
 
@@ -26,6 +27,11 @@
 		on:click={() => {
 			$togglePPopup = true;
 		}}>Add paragraph</button
+	>
+	<button
+		on:click={() => {
+			$toggleSubtitle = true;
+		}}>Add subTitle</button
 	>
 	<button
 		on:click={() => {

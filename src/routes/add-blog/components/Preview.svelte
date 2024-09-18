@@ -7,7 +7,7 @@
 		draggedIndex = index;
 		e.dataTransfer.effectAllowed = 'move';
 	}
-
+	console.log($value);
 	function handleDrop(e, index) {
 		e.preventDefault();
 		if (draggedIndex !== null && draggedIndex !== index) {
@@ -17,6 +17,7 @@
 			$value = [...$value.slice(0, index), draggedItem, ...$value.slice(index)];
 		}
 	}
+	$: console.log($generalObjectBlog);
 </script>
 
 <section class="preview_block" id="list">

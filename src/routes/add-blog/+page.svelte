@@ -14,7 +14,8 @@
 		toggleTitlePopup,
 		toggleSeoAndOtherPopup,
 		generalObjectBlog,
-		textForChanges
+		textForChanges,
+		toggleSubtitle
 	} from './store.js';
 	import ButtonBlock from './components/ButtonBlock.svelte';
 	import ListPopupContent from './components/ListPopupContent.svelte';
@@ -28,6 +29,7 @@
 	import Preview from './components/Preview.svelte';
 	import TitlePopup from './components/TitlePopup.svelte';
 	import SeoAndOtherPopup from './components/SeoAndOtherPopup.svelte';
+	import SubtitlePopup from './components/SubtitlePopup.svelte';
 
 	let positionMouseX = null;
 	let positionMouseY = null;
@@ -226,6 +228,12 @@
 		<MiniWindowPopup>
 			<APopupContent />
 		</MiniWindowPopup>
+	</PopupBackground>
+{/if}
+{#if $toggleSubtitle}<PopupBackground>
+		<BigWindowPopup>
+			<SubtitlePopup />
+		</BigWindowPopup>
 	</PopupBackground>
 {/if}
 {#if $toggleTitlePopup}<PopupBackground>
