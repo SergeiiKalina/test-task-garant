@@ -1,5 +1,5 @@
 <script>
-	import { value, title, titleseo, slug, generalObjectBlog } from '../../add-blog/store.js';
+	import { value, titleseo, slug, descriptionseo, isRewriteBlog } from '../../add-blog/store.js';
 	import src from '$lib/images/3.webp';
 	import src2 from '$lib//images/2.webp';
 	import { goto } from '$app/navigation';
@@ -31,7 +31,6 @@
 		let index = 0;
 		let currentStep = 0;
 		let endTag = true;
-		console.log(blog.title);
 		[...blog.text].map((el, i) => {
 			if (el === '>' && !endTag) {
 				currentStep = i;
@@ -158,8 +157,9 @@
 
 		$slug = blog.slug;
 		$titleseo = blog.titleseo;
+		$descriptionseo = blog.descriptionseo;
 		$value = arr;
-
+		$isRewriteBlog = true;
 		$value = [
 			{
 				tag: `<div style="margin-top: 24px;">...</div>`,

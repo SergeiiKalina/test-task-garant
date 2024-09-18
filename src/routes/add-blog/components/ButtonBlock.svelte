@@ -7,7 +7,8 @@
 		toggleSeoAndOtherPopup,
 		flagMainImg,
 		generalObjectBlog,
-		toggleSubtitle
+		toggleSubtitle,
+		isRewriteBlog
 	} from '../store.js';
 </script>
 
@@ -16,12 +17,12 @@
 		on:click={() => {
 			$toggleImgPopup = true;
 			$flagMainImg = true;
-		}}>Add main image</button
+		}}>{$isRewriteBlog ? 'change main image' : 'Add main image'}</button
 	>
 	<button
 		on:click={() => {
 			$toggleTitlePopup = true;
-		}}>Add Title</button
+		}}>{$isRewriteBlog ? 'change main title' : 'Add main title'}</button
 	>
 	<button
 		on:click={() => {
@@ -46,8 +47,9 @@
 	<button
 		on:click={() => {
 			$toggleSeoAndOtherPopup = true;
-		}}>Add Seo and Other</button
-	>
+		}}
+		>{$isRewriteBlog ? 'rewrite Seo and slug' : 'Add Seo and slug'}
+	</button>
 	<select
 		on:change={(e) => {
 			$generalObjectBlog = { ...$generalObjectBlog, tab: e.target.value };

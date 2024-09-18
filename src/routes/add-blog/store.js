@@ -1,6 +1,7 @@
 import { writable } from "svelte/store";
 import { LoremIpsum } from 'lorem-ipsum';
 
+export const isRewriteBlog = writable(false)
 export const generalObjectBlog = writable({})
 export const textForChanges = writable(null)
 export const flagMainImg  =writable(false)
@@ -23,6 +24,7 @@ export const indexLi = writable(null);
 export const title = writable('')
 export const titleseo = writable('')
 export const slug = writable('')
+export const descriptionseo = writable('')
 export const paragraph = writable('');
 export const subtitle = writable('');
 export const inputList = writable([{ id: 'item-1' }, { id: 'item-2' }])

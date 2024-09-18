@@ -32,3 +32,9 @@
 >
 	{$currentIndex !== null ? 'Rewrite' : 'ADD'}</button
 >
+
+<style>
+	button {
+		margin-top: 12px;
+	}
+</style>

@@ -1,16 +1,18 @@
 <script>
-	import { toggleSeoAndOtherPopup, generalObjectBlog } from '../store.js';
+	import {
+		toggleSeoAndOtherPopup,
+		generalObjectBlog,
+		titleseo,
+		slug,
+		descriptionseo
+	} from '../store.js';
 	import CloseButton from './CloseButton.svelte';
-
-	let titleseo = '';
-	let slug = '';
-	let descriptionseo = '';
 
 	const closePopup = () => {
 		$toggleSeoAndOtherPopup = false;
 	};
 	const addAll = () => {
-		$generalObjectBlog = { ...$generalObjectBlog, titleseo, slug, descriptionseo };
+		$generalObjectBlog = { ...$generalObjectBlog, $titleseo, $slug, $descriptionseo };
 		$toggleSeoAndOtherPopup = false;
 	};
 </script>
@@ -18,10 +20,10 @@
 <CloseButton {closePopup} />
 <h2>Seo info and other</h2>
 <form>
-	<label>titleSEO <input type="text" bind:value={titleseo} /></label>
-	<label>slug <input type="text" bind:value={slug} /></label>
+	<label>titleSEO <input type="text" bind:value={$titleseo} /></label>
+	<label>slug <input type="text" bind:value={$slug} /></label>
 	<label
-		>descriptionSEO <textarea type="text" bind:value={descriptionseo} rows="10" cols="40" /></label
+		>descriptionSEO <textarea type="text" bind:value={$descriptionseo} rows="10" cols="40" /></label
 	>
 	<button on:click|preventDefault={addAll}>Add All</button>
 </form>
