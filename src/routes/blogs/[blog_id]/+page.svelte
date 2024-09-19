@@ -6,12 +6,12 @@
 		descriptionseo,
 		isRewriteBlog,
 		generalObjectBlog
-	} from '../../add-blog/store.js';
+	} from '$lib/stores/blogs/store.js';
 	import src from '$lib/images/3.webp';
 	import src2 from '$lib//images/2.webp';
 	import { goto } from '$app/navigation';
-	import PopupBackground from '../../add-blog/components/PopupBackground.svelte';
-	import MiniWindowPopup from '../../add-blog/components/MiniWindowPopup.svelte';
+	import PopupBackground from '$lib/components/PopupBackground.svelte';
+	import MiniWindowPopup from '$lib/components/MiniWindowPopup.svelte';
 	export let data;
 	let toggleDelete = false;
 

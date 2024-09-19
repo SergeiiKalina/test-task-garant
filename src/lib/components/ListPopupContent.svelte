@@ -1,6 +1,6 @@
 <script>
-	import { toggleListPopup, value, inputList, currentIndex } from '../store.js';
-
+	import { toggleListPopup, value, inputList, currentIndex } from '$lib/stores/blogs/store.js';
+	console.log($inputList);
 	let isNumeric = false;
 
 	const addList = () => {

@@ -1,6 +1,6 @@
 <script>
 	import src from '$lib/images/3.webp';
-	import Pagination from '../../components/Pagination.svelte';
+	import Pagination from '$lib/components/Pagination.svelte';
 	export let data;
 	let currentPage = 1;
 	$: quantityBlogs = 9;

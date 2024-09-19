@@ -1,5 +1,5 @@
 <script>
-	import { toggleSubtitle, value, subtitle, currentIndex } from '../store.js';
+	import { toggleSubtitle, value, subtitle, currentIndex } from '$lib/stores/blogs/store.js';
 	import CloseButton from './CloseButton.svelte';
 
 	const closePopup = () => {

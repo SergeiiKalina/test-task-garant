@@ -1,5 +1,5 @@
 <script>
-	import { togglePPopup, lorem, value, paragraph, currentIndex } from '../store.js';
+	import { togglePPopup, lorem, value, paragraph, currentIndex } from '$lib/stores/blogs/store.js';
 	import CloseButton from './CloseButton.svelte';
 
 	const addP = () => {

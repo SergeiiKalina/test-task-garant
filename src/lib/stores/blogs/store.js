@@ -45,7 +45,7 @@ export const lorem = new LoremIpsum({
     }
 });
 
-export const value = writable([
+export const initialState = [
     {
         tag: `<p style="cursor: pointer;">...</p>`,
         content: `Ea sint et exercitation dolor ut laborum culpa Lorem irure culpa esse. Commodo aliqua minim 
@@ -53,7 +53,9 @@ export const value = writable([
         Reprehenderit Lorem qui consectetur dolor eu ea officia laboris id amet consectetur et cupidatat. Dolor in aute tempor fugiat qui irure sint mollit magna. Incididunt mollit aliqua commodo irure officia occaecat dolore nisi exercitation do. 
         Excepteur nostrud fugiat minim ex excepteur ipsum esse veniam nulla consequat eu cillum fugiat nostrud do.`
     }
-])
+]
+
+export const value = writable(initialState)
 
 export async function uploadPhoto(file){
     if(!file) return 

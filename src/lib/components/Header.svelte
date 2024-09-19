@@ -1,5 +1,6 @@
 <script>
 	import { t, locale, locales } from '$lib/dictionary/index.js';
+
 	const handleChange = ({ currentTarget }) => {
 		const { value } = currentTarget;
 		document.cookie = `lang=${value} ;`;
@@ -13,7 +14,9 @@
 		<li><a href="/calculate">{$t('header.calculate')}</a></li>
 		<li><a href="/blogs">{$t('header.blogs')}</a></li>
 		<li><a href="/add-blog">{$t('header.add-blog')}</a></li>
-		<li><a href="/all-blogs">all-blogs</a></li>
+		<li>
+			<a href="/all-blogs">all-blogs</a>
+		</li>
 	</ul>
 	<select bind:value={$locale} on:change={handleChange}>
 		{#each $locales as value}

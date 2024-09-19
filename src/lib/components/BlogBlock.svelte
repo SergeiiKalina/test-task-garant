@@ -14,7 +14,7 @@
 		title,
 		toggleImgPopup,
 		currentImgData
-	} from '../store.js';
+	} from '$lib/stores/blogs/store.js';
 	export let item;
 	export let index;
 	export let handleDragStart;
@@ -33,7 +33,7 @@
 			}
 			if (el === '<' && [...html][index + 1] === '/' && ([...html][index + 2] === 'l') & !flag) {
 				flag = true;
-				arrItems.push({ id: 'item-' + count, content: str });
+				arrItems.push({ id: 'item-' + count, content: removeHtmlTags(str) });
 				count++;
 				str = '';
 			}
@@ -86,7 +86,7 @@
 					$subtitle = removeHtmlTags(item.content);
 				} else if (item.tag.startsWith('<ol>')) {
 					$toggleListPopup = true;
-					$inputList = removeHtmlTags(item.content);
+					$inputList = parseItemList(item.content);
 				} else if (item.tag.startsWith('<ul>')) {
 					$toggleListPopup = true;
 					$inputList = parseItemList(item.content);

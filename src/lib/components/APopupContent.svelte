@@ -7,8 +7,8 @@
 		endSymbol,
 		editableEl,
 		indexLi
-	} from '../store.js';
-	import CloseButton from './CloseButton.svelte';
+	} from '$lib/stores/blogs/store.js';
+	import CloseButton from '$lib/components/CloseButton.svelte';
 	let url = '';
 
 	const parseString = (text, url) => {

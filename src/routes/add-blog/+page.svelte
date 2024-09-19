@@ -22,22 +22,22 @@
 		titleseo,
 		descriptionseo,
 		slug,
-		title
-	} from './store.js';
-	import ButtonBlock from './components/ButtonBlock.svelte';
-	import ListPopupContent from './components/ListPopupContent.svelte';
-	import PPopupContent from './components/PPopupContent.svelte';
-	import PopupBackground from './components/PopupBackground.svelte';
-	import BigWindowPopup from './components/BigWindowPopup.svelte';
-	import MiniWindowPopup from './components/MiniWindowPopup.svelte';
-	import ImagePopupContent from './components/ImagePopupContent.svelte';
-	import APopupContent from './components/APopupContent.svelte';
-	import ToolTips from './components/ToolTips.svelte';
-	import Preview from './components/Preview.svelte';
-	import TitlePopup from './components/TitlePopup.svelte';
-	import SeoAndOtherPopup from './components/SeoAndOtherPopup.svelte';
-	import SubtitlePopup from './components/SubtitlePopup.svelte';
-	import DeletePopUp from './components/DeletePopUp.svelte';
+		initialState
+	} from '$lib/stores/blogs/store.js';
+	import ButtonBlock from '$lib/components/ButtonBlock.svelte';
+	import ListPopupContent from '$lib/components/ListPopupContent.svelte';
+	import PPopupContent from '$lib/components/PPopupContent.svelte';
+	import PopupBackground from '$lib/components/PopupBackground.svelte';
+	import BigWindowPopup from '$lib/components/BigWindowPopup.svelte';
+	import MiniWindowPopup from '$lib/components/MiniWindowPopup.svelte';
+	import ImagePopupContent from '$lib/components/ImagePopupContent.svelte';
+	import APopupContent from '$lib/components/APopupContent.svelte';
+	import ToolTips from '$lib/components/ToolTips.svelte';
+	import Preview from '$lib/components/Preview.svelte';
+	import TitlePopup from '$lib/components/TitlePopup.svelte';
+	import SeoAndOtherPopup from '$lib/components/SeoAndOtherPopup.svelte';
+	import SubtitlePopup from '$lib/components/SubtitlePopup.svelte';
+	import DeletePopUp from '$lib/components/DeletePopUp.svelte';
 
 	let positionMouseX = null;
 	let positionMouseY = null;
@@ -103,8 +103,8 @@
 		}
 
 		function checkMousePosition(e) {
-			positionMouseX = e.clientX;
-			positionMouseY = e.clientY;
+			positionMouseX = e.pageX;
+			positionMouseY = e.pageY;
 		}
 
 		document.addEventListener('selectionchange', checkDeselectedText);
@@ -221,8 +221,9 @@
 
 				if (response.ok) {
 					const result = await response.json();
-					alert(`${result[0].title} Blog have rewrited`);
+					$value = [initialState];
 					$isRewriteBlog = false;
+					alert(`${result[0].title} Blog have rewrited`);
 				}
 			} else {
 				const response = await fetch('http://18.212.195.234:3000/rpc/create_new_blog', {
@@ -237,6 +238,7 @@
 
 				if (response.ok) {
 					const result = await response.json();
+					$value = [initialState];
 					alert(`${result[0].title} Blog created`);
 				}
 			}

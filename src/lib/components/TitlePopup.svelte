@@ -1,5 +1,11 @@
 <script>
-	import { toggleTitlePopup, generalObjectBlog, value, currentIndex, title } from '../store.js';
+	import {
+		toggleTitlePopup,
+		generalObjectBlog,
+		value,
+		currentIndex,
+		title
+	} from '$lib/stores/blogs/store.js';
 	import CloseButton from './CloseButton.svelte';
 	const closePopup = () => {
 		$toggleTitlePopup = false;

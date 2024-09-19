@@ -1,5 +1,5 @@
 <script>
-	import { value } from '../store.js';
+	import { value } from '$lib/stores/blogs/store.js';
 	import BlogBlock from './BlogBlock.svelte';
 	let draggedIndex = null;
 

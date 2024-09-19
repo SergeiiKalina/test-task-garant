@@ -10,7 +10,7 @@
 		toggleSubtitle,
 		isRewriteBlog,
 		currentIndex
-	} from '../store.js';
+	} from '$lib/stores/blogs/store.js';
 </script>
 
 <section class="block-add-blocks">

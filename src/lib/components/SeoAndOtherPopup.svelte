@@ -5,7 +5,7 @@
 		titleseo,
 		slug,
 		descriptionseo
-	} from '../store.js';
+	} from '$lib/stores/blogs/store.js';
 	import CloseButton from './CloseButton.svelte';
 
 	const closePopup = () => {
