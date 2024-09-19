@@ -3,7 +3,7 @@
 	import CloseButton from './CloseButton.svelte';
 
 	const addP = () => {
-		if (currentIndex !== null) {
+		if ($currentIndex !== null) {
 			$value[$currentIndex].content = $paragraph;
 			$currentIndex = null;
 		} else {

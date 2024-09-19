@@ -8,7 +8,8 @@
 		flagMainImg,
 		generalObjectBlog,
 		toggleSubtitle,
-		isRewriteBlog
+		isRewriteBlog,
+		currentIndex
 	} from '../store.js';
 </script>
 
@@ -26,21 +27,25 @@
 	>
 	<button
 		on:click={() => {
+			$currentIndex = null;
 			$togglePPopup = true;
 		}}>Add paragraph</button
 	>
 	<button
 		on:click={() => {
+			$currentIndex = null;
 			$toggleSubtitle = true;
 		}}>Add subTitle</button
 	>
 	<button
 		on:click={() => {
+			$currentIndex = null;
 			$toggleListPopup = true;
 		}}>Add list</button
 	>
 	<button
 		on:click={() => {
+			$currentIndex = null;
 			$toggleImgPopup = true;
 		}}>Add image</button
 	>

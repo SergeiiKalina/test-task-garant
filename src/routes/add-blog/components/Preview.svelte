@@ -1,11 +1,10 @@
 <script>
-	import { value, title, generalObjectBlog } from '../store.js';
+	import { value } from '../store.js';
 	import BlogBlock from './BlogBlock.svelte';
 	let draggedIndex = null;
 
 	function handleDragStart(e, index) {
 		if (index === 0 || index === 1) return;
-		console.log(index);
 		draggedIndex = index;
 		e.dataTransfer.effectAllowed = 'move';
 	}

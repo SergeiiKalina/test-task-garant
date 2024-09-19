@@ -1,9 +1,19 @@
 <script>
-	import { value, titleseo, slug, descriptionseo, isRewriteBlog } from '../../add-blog/store.js';
+	import {
+		value,
+		titleseo,
+		slug,
+		descriptionseo,
+		isRewriteBlog,
+		generalObjectBlog
+	} from '../../add-blog/store.js';
 	import src from '$lib/images/3.webp';
 	import src2 from '$lib//images/2.webp';
 	import { goto } from '$app/navigation';
+	import PopupBackground from '../../add-blog/components/PopupBackground.svelte';
+	import MiniWindowPopup from '../../add-blog/components/MiniWindowPopup.svelte';
 	export let data;
+	let toggleDelete = false;
 
 	const blog = data.blog[0];
 	const date = new Date(blog.createat).toLocaleDateString('eu-CA', {
@@ -95,6 +105,7 @@
 					...arr[index],
 					content: str
 				};
+
 				index++;
 				currentStep = i + 3;
 				endTag = false;
@@ -105,6 +116,7 @@
 					...arr[index],
 					content: str
 				};
+
 				index++;
 				currentStep = i + 3;
 				endTag = false;
@@ -115,6 +127,7 @@
 					...arr[index],
 					content: str
 				};
+
 				index++;
 				currentStep = i + 4;
 				endTag = false;
@@ -125,26 +138,28 @@
 					...arr[index],
 					content: str
 				};
+
 				index++;
 				currentStep = i + 4;
 				endTag = false;
 				str = '';
 			}
-			if (el === '<' && [...blog.text][i + 1] === '/' && [...blog.text][i + 2] === 'd' && endTag) {
-				arr[index] = {
-					...arr[index],
-					content: str
-				};
-				index++;
-				currentStep = i + 4;
-				endTag = false;
-				str = '';
-			}
+			// if (el === '<' && [...blog.text][i + 1] === '/' && [...blog.text][i + 2] === 'd' && endTag) {
+			// 	arr[index] = {
+			// 		...arr[index],
+			// 		content: str
+			// 	};
+			// 	index++;
+			// 	currentStep = i + 4;
+			// 	endTag = false;
+			// 	str = '';
+			// }
 			if ([...blog.text][i] === '/' && [...blog.text][i + 1] === '>' && endTag) {
 				arr[index] = {
 					...arr[index],
 					content: str
 				};
+
 				index++;
 				currentStep = i + 4;
 				endTag = false;
@@ -173,9 +188,40 @@
 			},
 			...$value
 		];
+		$generalObjectBlog = { ...$generalObjectBlog, blog_id: blog.blog_id };
 		goto('/add-blog');
 	}}>rewrite blog</button
 >
+<button
+	class="delete"
+	on:click={() => {
+		toggleDelete = true;
+	}}>delete</button
+>
+{#if blog.isdeleted}
+	<button
+		class="restore"
+		on:click={async () => {
+			const tokenRewrite =
+				'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoicmV3cml0ZXIiLCJ1c2VyX2lkIjo0fQ.ExcwIS5H6mGoGQOv6zX_4eND5hBzZ0k_R7Czyl5mBmY';
+			const response = await fetch('http://18.212.195.234:3000/rpc/blog_recovery', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Prefer: 'return=representation',
+					Authorization: `Bearer ${tokenRewrite}`
+				},
+				body: JSON.stringify({ param_blog_id: blog.blog_id })
+			});
+			if (response.ok) {
+				toggleDelete = false;
+				const result = await response.json();
+				alert(`${result[0].title} Blog was restored`);
+				goto('/all-blogs');
+			}
+		}}>restore</button
+	>
+{/if}
 <img
 	src={blog.background_image.startsWith('https://') ? blog.background_image : src}
 	alt="any pictures"
@@ -189,7 +235,55 @@
 	<article>{@html updatedText}</article>
 </section>
 
+{#if toggleDelete}
+	<PopupBackground>
+		<MiniWindowPopup
+			><div class="popup-wrapper">
+				<h2>Are you sure?</h2>
+
+				<div class="button-wrpper">
+					<button
+						on:click={() => {
+							toggleDelete = false;
+						}}>no</button
+					><button
+						class="delete"
+						on:click={async () => {
+							const tokenRewrite =
+								'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoicmV3cml0ZXIiLCJ1c2VyX2lkIjo0fQ.ExcwIS5H6mGoGQOv6zX_4eND5hBzZ0k_R7Czyl5mBmY';
+							const response = await fetch('http://18.212.195.234:3000/rpc/delete_blog', {
+								method: 'POST',
+								headers: {
+									'Content-Type': 'application/json',
+									Prefer: 'return=representation',
+									Authorization: `Bearer ${tokenRewrite}`
+								},
+								body: JSON.stringify({ param_blog_id: blog.blog_id })
+							});
+							if (response.ok) {
+								toggleDelete = false;
+								const result = await response.json();
+								alert(`${result[0].title} Blog was deleted`);
+								goto('/blogs');
+							}
+						}}>yes</button
+					>
+				</div>
+			</div>
+		</MiniWindowPopup>
+	</PopupBackground>
+{/if}
+
 <style>
+	.popup-wrapper {
+		display: flex;
+		flex-direction: column;
+	}
+	.button-wrpper {
+		display: flex;
+		width: 100%;
+		justify-content: space-between;
+	}
 	section {
 		min-height: 100vh;
 		margin-top: 24px;
@@ -212,5 +306,11 @@
 		display: block;
 		margin: 0 auto;
 		padding-top: 40px;
+	}
+	.delete {
+		background-color: red;
+	}
+	.restore {
+		background-color: green;
 	}
 </style>

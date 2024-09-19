@@ -46,7 +46,6 @@
 		});
 		return arrItems;
 	};
-	console.log(item);
 </script>
 
 <div
@@ -79,7 +78,7 @@
 		<button
 			on:click={() => {
 				$currentIndex = index;
-				if (item.tag.startsWith('<p>')) {
+				if (item.tag.startsWith('<p')) {
 					$togglePPopup = true;
 					$paragraph = removeHtmlTags(item.content);
 				} else if (item.tag.startsWith('<h2>')) {

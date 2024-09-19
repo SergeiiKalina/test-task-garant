@@ -29,12 +29,23 @@
 				}
 			];
 		} else {
-			$generalObjectBlog = { ...$generalObjectBlog, image: imgSrc, background_image: imgSrc };
-			$value[$currentIndex] = {
-				tag: `<div style="margin-top: 24px;">...</div>`,
-				content: `<img width="100%" src="${imgSrc}" alt="pictures"/>`,
-				main: $currentIndex !== 0 ? false : true
-			};
+			if ($flagMainImg || $currentIndex === 0) {
+				console.log('call');
+				$generalObjectBlog = { ...$generalObjectBlog, image: imgSrc, background_image: imgSrc };
+				$value[0] = {
+					tag: `<div style="margin-top: 24px;">...</div>`,
+					content: `<img width="100%" src="${imgSrc}" alt="pictures"/>`,
+					main: true
+				};
+				$flagMainImg = false;
+			} else {
+				$generalObjectBlog = { ...$generalObjectBlog, image: imgSrc, background_image: imgSrc };
+				$value[$currentIndex] = {
+					tag: `<div style="margin-top: 24px;">...</div>`,
+					content: `<img width="100%" src="${imgSrc}" alt="pictures"/>`,
+					main: false
+				};
+			}
 		}
 
 		$currentIndex = null;

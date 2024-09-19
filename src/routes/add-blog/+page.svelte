@@ -21,7 +21,8 @@
 		isRewriteBlog,
 		titleseo,
 		descriptionseo,
-		slug
+		slug,
+		title
 	} from './store.js';
 	import ButtonBlock from './components/ButtonBlock.svelte';
 	import ListPopupContent from './components/ListPopupContent.svelte';
@@ -181,17 +182,23 @@
 	};
 
 	const sendBlog = async () => {
-		const HTML = $value.map((el) => el.tag.replace('...', el.content)).join('');
+		const HTML = $value
+			.slice(2)
+			.map((el) => el.tag.replace('...', el.content))
+			.join('');
 		const pureText = removeHtmlTags(HTML);
+
 		$generalObjectBlog = {
 			...$generalObjectBlog,
 			text: HTML,
-			puretext: pureText,
 			descriptionseo: $descriptionseo,
 			titleseo: $titleseo,
 			slug: $slug,
-			tab: 'article'
+			title: $value[1].content,
+			tab: 'article',
+			puretext: pureText
 		};
+
 		let newObj = {};
 		for (let key in $generalObjectBlog) {
 			newObj[`param_${key}`] = $generalObjectBlog[key];
@@ -199,21 +206,43 @@
 
 		const tokenRewrite =
 			'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoicmV3cml0ZXIiLCJ1c2VyX2lkIjo0fQ.ExcwIS5H6mGoGQOv6zX_4eND5hBzZ0k_R7Czyl5mBmY';
-		const response = await fetch('http://18.212.195.234:3000/rpc/create_new_blog', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				Prefer: 'return=representation',
-				Authorization: `Bearer ${tokenRewrite}`
-			},
-			body: JSON.stringify(newObj)
-		});
 
-		if (response.ok) {
-			const result = await response.json();
-			alert(`${result[0].title} Blog created`);
+		try {
+			if ($isRewriteBlog) {
+				const response = await fetch('http://18.212.195.234:3000/rpc/rewrite_blog', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Prefer: 'return=representation',
+						Authorization: `Bearer ${tokenRewrite}`
+					},
+					body: JSON.stringify(newObj)
+				});
+
+				if (response.ok) {
+					const result = await response.json();
+					alert(`${result[0].title} Blog have rewrited`);
+					$isRewriteBlog = false;
+				}
+			} else {
+				const response = await fetch('http://18.212.195.234:3000/rpc/create_new_blog', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Prefer: 'return=representation',
+						Authorization: `Bearer ${tokenRewrite}`
+					},
+					body: JSON.stringify(newObj)
+				});
+
+				if (response.ok) {
+					const result = await response.json();
+					alert(`${result[0].title} Blog created`);
+				}
+			}
+		} catch (error) {
+			console.log(error);
 		}
-		$isRewriteBlog = false;
 	};
 </script>
 
