@@ -20,7 +20,6 @@
 <button
 	on:click={() => {
 		if ($currentIndex === null && !$flagMainImg) {
-			console.log('call 1');
 			$value = [
 				...$value,
 				{

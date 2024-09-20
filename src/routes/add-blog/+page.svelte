@@ -207,7 +207,6 @@
 
 		const tokenRewrite =
 			'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoicmV3cml0ZXIiLCJ1c2VyX2lkIjo0fQ.ExcwIS5H6mGoGQOv6zX_4eND5hBzZ0k_R7Czyl5mBmY';
-		console.log(newObj);
 		try {
 			if ($isRewriteBlog) {
 				const response = await fetch('http://18.212.195.234:3000/rpc/rewrite_blog', {

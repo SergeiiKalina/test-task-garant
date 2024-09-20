@@ -232,6 +232,7 @@
 	src={blog.background_image.startsWith('https://') ? blog.background_image : src}
 	alt="any pictures"
 />
+
 <section>
 	<header>
 		<h2>{blog.title}</h2>
