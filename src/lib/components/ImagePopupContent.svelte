@@ -19,7 +19,8 @@
 />
 <button
 	on:click={() => {
-		if ($currentIndex === null) {
+		if ($currentIndex === null && !$flagMainImg) {
+			console.log('call 1');
 			$value = [
 				...$value,
 				{
@@ -37,13 +38,25 @@
 		}
 
 		if ($flagMainImg || $currentIndex === 0) {
-			console.log('call');
 			$generalObjectBlog = { ...$generalObjectBlog, image: imgSrc, background_image: imgSrc };
-			$value[0] = {
-				tag: `<div style="margin-top: 24px;">...</div>`,
-				content: `<img width="100%" src="${imgSrc}" alt="pictures"/>`,
-				main: true
-			};
+
+			if ($value.length > 0) {
+				$value = [
+					{
+						tag: `<div style="margin-top: 24px;">...</div>`,
+						content: `<img width="100%" src="${imgSrc}" alt="pictures"/>`,
+						main: true
+					},
+					...$value
+				];
+			} else {
+				$value[0] = {
+					tag: `<div style="margin-top: 24px;">...</div>`,
+					content: `<img width="100%" src="${imgSrc}" alt="pictures"/>`,
+					main: true
+				};
+			}
+
 			$flagMainImg = false;
 		}
 

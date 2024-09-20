@@ -94,6 +94,7 @@
 					$toggleTitlePopup = true;
 					$title = removeHtmlTags(item.content);
 				} else if (item.content.startsWith('<img')) {
+					console.log(item.content);
 					$toggleImgPopup = true;
 					const srcMatch = item.content.match(/src="([^"]*)"/);
 					const altMatch = item.content.match(/alt="([^"]*)"/);

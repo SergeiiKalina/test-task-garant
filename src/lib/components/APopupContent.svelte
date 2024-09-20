@@ -10,7 +10,7 @@
 	} from '$lib/stores/blogs/store.js';
 	import CloseButton from '$lib/components/CloseButton.svelte';
 	let url = '';
-
+	$: console.log(url);
 	const parseString = (text, url) => {
 		let startTag = false;
 		let counter = 0;
@@ -22,6 +22,7 @@
 			}
 			if (!startTag) {
 				if (counter === $startSymbol) {
+					console.log(url);
 					result += `<a href="${url}">`;
 				}
 				if (counter === $endSymbol) {
@@ -68,4 +69,4 @@
 
 <input type="text" name="a-href" bind:value={url} />
 
-<button on:click={addURL}>ADD HREF</button>
+<button on:click={() => addURL(url)}>ADD HREF</button>

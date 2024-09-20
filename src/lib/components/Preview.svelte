@@ -21,6 +21,7 @@
 			$value = [...$value.slice(0, index), draggedItem, ...$value.slice(index)];
 		}
 	}
+	$: $value = [...$value.filter((item) => item.main), ...$value.filter((item) => !item.main)];
 </script>
 
 <section class="preview_block" id="list">

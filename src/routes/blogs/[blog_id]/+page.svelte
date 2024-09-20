@@ -173,6 +173,7 @@
 		$slug = blog.slug;
 		$titleseo = blog.titleseo;
 		$descriptionseo = blog.descriptionseo;
+
 		$value = arr;
 		$isRewriteBlog = true;
 		$value = [
@@ -188,7 +189,12 @@
 			},
 			...$value
 		];
-		$generalObjectBlog = { ...$generalObjectBlog, blog_id: blog.blog_id };
+		$generalObjectBlog = {
+			...$generalObjectBlog,
+			blog_id: blog.blog_id,
+			image: blog.image,
+			background_image: blog.background_image
+		};
 		goto('/add-blog');
 	}}>rewrite blog</button
 >

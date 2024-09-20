@@ -12,7 +12,12 @@
 		$toggleSeoAndOtherPopup = false;
 	};
 	const addAll = () => {
-		$generalObjectBlog = { ...$generalObjectBlog, $titleseo, $slug, $descriptionseo };
+		$generalObjectBlog = {
+			...$generalObjectBlog,
+			titleseo: $titleseo,
+			slug: $slug,
+			descriptionseo: $descriptionseo
+		};
 		$toggleSeoAndOtherPopup = false;
 	};
 </script>

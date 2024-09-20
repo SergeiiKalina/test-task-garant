@@ -38,6 +38,7 @@
 	import SeoAndOtherPopup from '$lib/components/SeoAndOtherPopup.svelte';
 	import SubtitlePopup from '$lib/components/SubtitlePopup.svelte';
 	import DeletePopUp from '$lib/components/DeletePopUp.svelte';
+	import CloseButton from '$lib/components/CloseButton.svelte';
 
 	let positionMouseX = null;
 	let positionMouseY = null;
@@ -206,7 +207,7 @@
 
 		const tokenRewrite =
 			'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoicmV3cml0ZXIiLCJ1c2VyX2lkIjo0fQ.ExcwIS5H6mGoGQOv6zX_4eND5hBzZ0k_R7Czyl5mBmY';
-
+		console.log(newObj);
 		try {
 			if ($isRewriteBlog) {
 				const response = await fetch('http://18.212.195.234:3000/rpc/rewrite_blog', {
@@ -221,7 +222,6 @@
 
 				if (response.ok) {
 					const result = await response.json();
-					$value = [initialState];
 					$isRewriteBlog = false;
 					alert(`${result[0].title} Blog have rewrited`);
 				}
@@ -233,12 +233,11 @@
 						Prefer: 'return=representation',
 						Authorization: `Bearer ${tokenRewrite}`
 					},
-					body: JSON.stringify(newObj)
+					body: JSON.stringify(restnewObj)
 				});
 
 				if (response.ok) {
 					const result = await response.json();
-					$value = [initialState];
 					alert(`${result[0].title} Blog created`);
 				}
 			}
