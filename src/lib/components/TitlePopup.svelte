@@ -13,18 +13,26 @@
 
 	const writeTitle = () => {
 		$generalObjectBlog = { ...$generalObjectBlog, title: $title };
-		if ($value.length > 1) {
-			$value.splice(1, 0, {
-				tag: `<h1>...</h1>`,
-				content: $title,
-				main: true
+		const newMainTitle = {
+			tag: `<h1>...</h1>`,
+			content: $title,
+			main: true
+		};
+		const index = $value.findIndex((el) => el.main && el.tag === '<h1>...</h1>');
+		console.log(index);
+		if (index === -1 && $value.length > 1) {
+			value.update((v) => {
+				v.splice(1, 0, newImageObject);
+				return v;
 			});
+		}
+		if ($value.length === 1 && $value[0].main && $value[0].tag === '<h1>...</h1>') {
+			$value[0] = newMainTitle;
+		}
+		if ($value.length > 1 && $value[1].main) {
+			$value[1] = newMainTitle;
 		} else {
-			$value[1] = {
-				tag: `<h1>...</h1>`,
-				content: $title,
-				main: true
-			};
+			console.log('call');
 		}
 
 		$toggleTitlePopup = false;

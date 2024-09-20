@@ -8,6 +8,43 @@
 		currentIndex
 	} from '$lib/stores/blogs/store.js';
 	let imgSrc = '';
+
+	function createImageObject(src, flag) {
+		return {
+			tag: `<div style="margin-top: 24px;">...</div>`,
+			content: `<img width="100%" src="${src}" alt="pictures"/>`,
+			main: flag
+		};
+	}
+
+	function addImageObject(imgSrc) {
+		const newImageObject = createImageObject(imgSrc, $flagMainImg);
+		if ($flagMainImg) {
+			if ($value.length > 0) {
+				if ($value[0].main) {
+					$value[0] = newImageObject;
+				} else {
+					value.update((v) => {
+						v.splice(0, 0, newImageObject);
+						return v;
+					});
+				}
+			} else {
+				$value[0] = newImageObject;
+			}
+			$generalObjectBlog = { ...$generalObjectBlog, image: imgSrc, background_image: imgSrc };
+			$flagMainImg = false;
+		} else {
+			if ($currentIndex === null) {
+				$value = [...$value, newImageObject];
+			} else {
+				$value[$currentIndex] = newImageObject;
+			}
+		}
+
+		$currentIndex = null;
+		$toggleImgPopup = false;
+	}
 </script>
 
 <input
@@ -17,52 +54,7 @@
 		imgSrc = await uploadPhoto(e.target.files[0]);
 	}}
 />
-<button
-	on:click={() => {
-		if ($currentIndex === null && !$flagMainImg) {
-			$value = [
-				...$value,
-				{
-					tag: `<div style="margin-top: 24px;">...</div>`,
-					content: `<img width="100%" src="${imgSrc}" alt="pictures"/>`,
-					main: false
-				}
-			];
-		}
-		if ($currentIndex > 1) {
-			$value[$currentIndex] = {
-				tag: `<div style="margin-top: 24px;">...</div>`,
-				content: `<img width="100%" src="${imgSrc}" alt="pictures"/>`
-			};
-		}
-
-		if ($flagMainImg || $currentIndex === 0) {
-			$generalObjectBlog = { ...$generalObjectBlog, image: imgSrc, background_image: imgSrc };
-
-			if ($value.length > 0) {
-				$value = [
-					{
-						tag: `<div style="margin-top: 24px;">...</div>`,
-						content: `<img width="100%" src="${imgSrc}" alt="pictures"/>`,
-						main: true
-					},
-					...$value
-				];
-			} else {
-				$value[0] = {
-					tag: `<div style="margin-top: 24px;">...</div>`,
-					content: `<img width="100%" src="${imgSrc}" alt="pictures"/>`,
-					main: true
-				};
-			}
-
-			$flagMainImg = false;
-		}
-
-		$currentIndex = null;
-		$toggleImgPopup = false;
-	}}>ADD</button
->
+<button on:click={() => addImageObject(imgSrc)}>ADD</button>
 <button
 	class="img-popup-close"
 	type="button"

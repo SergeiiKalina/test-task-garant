@@ -232,7 +232,7 @@
 						Prefer: 'return=representation',
 						Authorization: `Bearer ${tokenRewrite}`
 					},
-					body: JSON.stringify(restnewObj)
+					body: JSON.stringify(newObj)
 				});
 
 				if (response.ok) {
