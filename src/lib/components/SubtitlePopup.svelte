@@ -1,23 +1,28 @@
 <script>
-	import { toggleSubtitle, value, subtitle, currentIndex } from '$lib/stores/blogs/store.js';
+	import {
+		togglePopup,
+		generalObjectBlog,
+		subtitle,
+		currentIndex
+	} from '$lib/stores/blogs/store.js';
 	import CloseButton from './CloseButton.svelte';
 
 	const closePopup = () => {
-		$toggleSubtitle = false;
+		$togglePopup = null;
 	};
 	const addSubtitle = () => {
 		if ($currentIndex !== null) {
-			$value[$currentIndex].content = $subtitle;
+			$generalObjectBlog.content[$currentIndex].content = $subtitle;
 		} else {
-			$value = [
-				...$value,
+			$generalObjectBlog.content = [
+				...$generalObjectBlog.content,
 				{
 					tag: '<h2>...</h2>',
 					content: $subtitle
 				}
 			];
 		}
-		$toggleSubtitle = false;
+		$togglePopup = null;
 	};
 </script>
 

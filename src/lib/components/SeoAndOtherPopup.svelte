@@ -1,12 +1,12 @@
 <script>
-	import { toggleSeoAndOtherPopup, generalObjectBlog } from '$lib/stores/blogs/store.js';
+	import { togglePopup, generalObjectBlog } from '$lib/stores/blogs/store.js';
 	import CloseButton from './CloseButton.svelte';
 	let titleseo = '';
 	let slug = '';
 	let descriptionseo = '';
 
 	const closePopup = () => {
-		$toggleSeoAndOtherPopup = false;
+		$togglePopup = null;
 	};
 	const addAllSeo = () => {
 		$generalObjectBlog = {
@@ -15,7 +15,7 @@
 			slug,
 			descriptionseo
 		};
-		$toggleSeoAndOtherPopup = false;
+		$togglePopup = null;
 	};
 </script>
 

@@ -1,15 +1,10 @@
 <script>
-	import {
-		toggleTitlePopup,
-		generalObjectBlog,
-		value,
-		currentIndex
-	} from '$lib/stores/blogs/store.js';
+	import { togglePopup, generalObjectBlog, currentIndex } from '$lib/stores/blogs/store.js';
 	import CloseButton from './CloseButton.svelte';
 	let title = '';
 
 	const closePopup = () => {
-		$toggleTitlePopup = false;
+		$togglePopup = null;
 	};
 
 	const writeTitle = () => {
@@ -20,25 +15,30 @@
 			main: true
 		};
 
-		const index = $value.findIndex((el) => el.main && el.tag === '<h1>...</h1>');
+		const index = $generalObjectBlog.content.findIndex(
+			(el) => el.main && el.tag === '<h1>...</h1>'
+		);
 
-		if (index === -1 && $value.length > 0) {
-			if ($value[0].tag.startsWith('<div') && $value[0].main) {
-				value.update((v) => {
-					v.splice(1, 0, newMainTitle);
+		if (index === -1 && $generalObjectBlog.content.length > 0) {
+			if (
+				$generalObjectBlog.content[0].tag.startsWith('<div') &&
+				$generalObjectBlog.content[0].main
+			) {
+				generalObjectBlog.update((v) => {
+					v.content.splice(1, 0, newMainTitle);
 					return v;
 				});
 			} else {
-				value.update((v) => {
-					v.unshift(newMainTitle);
+				generalObjectBlog.update((v) => {
+					v.content.unshift(newMainTitle);
 					return v;
 				});
 			}
 		} else {
-			$value[index] = newMainTitle;
+			$generalObjectBlog.content[index] = newMainTitle;
 		}
 
-		$toggleTitlePopup = false;
+		$togglePopup = null;
 	};
 </script>
 

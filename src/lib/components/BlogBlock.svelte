@@ -3,15 +3,10 @@
 		editableEl,
 		paragraph,
 		removeHtmlTags,
-		togglePPopup,
 		currentIndex,
-		toggleSubtitle,
 		subtitle,
-		toggleListPopup,
-		toggleDeletePopup,
+		togglePopup,
 		inputList,
-		toggleTitlePopup,
-		toggleImgPopup,
 		currentImgData,
 		flagMainImg
 	} from '$lib/stores/blogs/store.js';
@@ -24,24 +19,11 @@
 
 	const parseItemList = (html) => {
 		let arrItems = [];
-		let flag = false;
-		let str = '';
-		let count = 1;
-		[...html].forEach((el, index) => {
-			if (el === '<' && [...html][index + 1] === 'l' && !flag) {
-				flag = true;
-			}
-			if (el === '<' && [...html][index + 1] === '/' && ([...html][index + 2] === 'l') & !flag) {
-				flag = true;
-				arrItems.push({ id: 'item-' + count, content: removeHtmlTags(str) });
-				count++;
-				str = '';
-			}
-			if (!flag) {
-				str += el;
-			}
-			if (el === '>' && flag) {
-				flag = false;
+		const parser = new DOMParser();
+		const doc = parser.parseFromString(html, 'text/html');
+		doc.body.childNodes.forEach((node, index) => {
+			if (node.nodeType === Node.ELEMENT_NODE) {
+				arrItems.push({ id: 'item-' + (index + 1), content: removeHtmlTags(node.innerHTML) });
 			}
 		});
 		return arrItems;
@@ -79,21 +61,21 @@
 			on:click={() => {
 				$currentIndex = index;
 				if (item.tag.startsWith('<p')) {
-					$togglePPopup = true;
+					$togglePopup = 'paragraph';
 					$paragraph = removeHtmlTags(item.content);
 				} else if (item.tag.startsWith('<h2>')) {
-					$toggleSubtitle = true;
+					$togglePopup = 'subtitle';
 					$subtitle = removeHtmlTags(item.content);
 				} else if (item.tag.startsWith('<ol>')) {
-					$toggleListPopup = true;
+					$togglePopup = 'list';
 					$inputList = parseItemList(item.content);
 				} else if (item.tag.startsWith('<ul>')) {
-					$toggleListPopup = true;
+					$togglePopup = 'list';
 					$inputList = parseItemList(item.content);
 				} else if (item.tag.startsWith('<h1>')) {
-					$toggleTitlePopup = true;
+					$togglePopup = 'title';
 				} else if (item.content.startsWith('<img')) {
-					$toggleImgPopup = true;
+					$togglePopup = 'image';
 					const srcMatch = item.content.match(/src="([^"]*)"/);
 					const altMatch = item.content.match(/alt="([^"]*)"/);
 					$currentImgData = {
@@ -111,7 +93,7 @@
 				class="delete"
 				on:click={(e) => {
 					isDraggable = true;
-					$toggleDeletePopup = true;
+					$togglePopup = 'delete';
 					$currentIndex = index;
 				}}>X</button
 			>

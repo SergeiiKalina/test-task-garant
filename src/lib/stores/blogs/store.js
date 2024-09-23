@@ -1,21 +1,24 @@
 import { writable } from "svelte/store";
 import { LoremIpsum } from 'lorem-ipsum';
 
+export const initialState = [
+    {
+        tag: `<p style="cursor: pointer;">...</p>`,
+        content: `Ea sint et exercitation dolor ut laborum culpa Lorem irure culpa esse. Commodo aliqua minim 
+        laboris ullamco id quis ea excepteur velit magna ea. Nisi officia laborum sunt voluptate enim sit magna dolor laborum ex aute. 
+        Reprehenderit Lorem qui consectetur dolor eu ea officia laboris id amet consectetur et cupidatat. Dolor in aute tempor fugiat qui irure sint mollit magna. Incididunt mollit aliqua commodo irure officia occaecat dolore nisi exercitation do. 
+        Excepteur nostrud fugiat minim ex excepteur ipsum esse veniam nulla consequat eu cillum fugiat nostrud do.`
+    }
+]
+
+export const togglePopup = writable(null)
 export const isRewriteBlog = writable(false)
-export const generalObjectBlog = writable({})
+export const generalObjectBlog = writable({content: initialState, tab: 'article'})
 export const textForChanges = writable(null)
 export const flagMainImg  =writable(false)
 export const currentIndex = writable( null)
 export const startSymbol = writable( null)
 export const endSymbol = writable( null)
-export const togglePPopup  =writable(false)
-export const toggleSubtitle  =writable(false)
-export const toggleDeletePopup  =writable(false)
-export const toggleListPopup  =writable(false)
-export const toggleImgPopup  =writable(false)
-export const toggleAPopup  =writable(false)
-export const toggleTitlePopup  =writable(false)
-export const toggleSeoAndOtherPopup  =writable(false)
 export const currentImgData = writable({src: '',
     alt: ''
 })
@@ -41,17 +44,12 @@ export const lorem = new LoremIpsum({
     }
 });
 
-export const initialState = [
-    {
-        tag: `<p style="cursor: pointer;">...</p>`,
-        content: `Ea sint et exercitation dolor ut laborum culpa Lorem irure culpa esse. Commodo aliqua minim 
-        laboris ullamco id quis ea excepteur velit magna ea. Nisi officia laborum sunt voluptate enim sit magna dolor laborum ex aute. 
-        Reprehenderit Lorem qui consectetur dolor eu ea officia laboris id amet consectetur et cupidatat. Dolor in aute tempor fugiat qui irure sint mollit magna. Incididunt mollit aliqua commodo irure officia occaecat dolore nisi exercitation do. 
-        Excepteur nostrud fugiat minim ex excepteur ipsum esse veniam nulla consequat eu cillum fugiat nostrud do.`
-    }
-]
+export function hiddenToolTip() {
+    const tooltip = document.querySelector('.tooltip-container');
+    tooltip.style.opacity = 0;
+    tooltip.style.visibility = 'hidden';
+}
 
-export const value = writable(initialState)
 
 export async function uploadPhoto(file){
     if(!file) return 

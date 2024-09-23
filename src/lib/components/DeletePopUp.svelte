@@ -1,9 +1,11 @@
 <script>
-	import { currentIndex, toggleDeletePopup, value } from '$lib/stores/blogs/store.js';
+	import { currentIndex, togglePopup, generalObjectBlog } from '$lib/stores/blogs/store.js';
 	const deleteItem = () => {
-		$value = $value.filter((el, index) => index !== $currentIndex);
+		$generalObjectBlog.content = $generalObjectBlog.content.filter(
+			(el, index) => index !== $currentIndex
+		);
 		$currentIndex = null;
-		$toggleDeletePopup = false;
+		$togglePopup = null;
 	};
 </script>
 
@@ -14,7 +16,7 @@
 			class="no"
 			on:click={() => {
 				$currentIndex = null;
-				$toggleDeletePopup = false;
+				$togglePopup = null;
 			}}>no</button
 		><button class="yes" on:click={deleteItem}>yes</button>
 	</div>

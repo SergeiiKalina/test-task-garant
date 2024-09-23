@@ -1,7 +1,7 @@
 <script>
 	import {
-		toggleAPopup,
-		value,
+		togglePopup,
+		generalObjectBlog,
 		currentIndex,
 		startSymbol,
 		endSymbol,
@@ -38,27 +38,27 @@
 	};
 
 	function addURL(url) {
-		const content = $value[$currentIndex].content;
+		const content = $generalObjectBlog.content[$currentIndex].content;
 
 		if ($indexLi) {
 			const regex = new RegExp(`<li\\s+data-index="${$indexLi}">(.*?)<\/li>`, 'g');
 			const modifiedContent = content.replace(regex, (match, p1) => {
 				return `<li data-index="${$indexLi}">${parseString(p1, url)}</li>`;
 			});
-			$value[$currentIndex].content = modifiedContent;
+			$generalObjectBlog.content[$currentIndex].content = modifiedContent;
 			$indexLi = null;
 		} else {
-			$value[$currentIndex].content = parseString(content, url);
+			$generalObjectBlog.content[$currentIndex].content = parseString(content, url);
 		}
 
 		document.querySelectorAll('.draggable-block').forEach((el) => (el.draggable = false));
-		$toggleAPopup = false;
+		$togglePopup = null;
 		$editableEl = null;
 		$currentIndex = null;
 	}
 
 	const closePopup = () => {
-		$toggleAPopup = false;
+		$togglePopup = null;
 		$editableEl = null;
 		$indexLi = null;
 	};

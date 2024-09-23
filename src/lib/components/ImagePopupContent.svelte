@@ -1,7 +1,6 @@
 <script>
 	import {
-		toggleImgPopup,
-		value,
+		togglePopup,
 		uploadPhoto,
 		flagMainImg,
 		generalObjectBlog,
@@ -20,30 +19,33 @@
 	function addImageObject(imgSrc) {
 		const newImageObject = createImageObject(imgSrc, $flagMainImg);
 		if ($flagMainImg) {
-			if ($value.length > 0) {
-				if ($value[0].main && !$value[0].tag.startsWith('<h1')) {
-					$value[0] = newImageObject;
+			if ($generalObjectBlog.content.length > 0) {
+				if (
+					$generalObjectBlog.content[0].main &&
+					!$generalObjectBlog.content[0].tag.startsWith('<h1')
+				) {
+					$generalObjectBlog.content[0] = newImageObject;
 				} else {
-					value.update((v) => {
-						v.splice(0, 0, newImageObject);
+					generalObjectBlog.update((v) => {
+						v.content.splice(0, 0, newImageObject);
 						return v;
 					});
 				}
 			} else {
-				$value[0] = newImageObject;
+				$generalObjectBlog.content[0] = newImageObject;
 			}
 			$generalObjectBlog = { ...$generalObjectBlog, image: imgSrc, background_image: imgSrc };
 			$flagMainImg = false;
 		} else {
 			if ($currentIndex === null) {
-				$value = [...$value, newImageObject];
+				$generalObjectBlog.content = [...$generalObjectBlog.content, newImageObject];
 			} else {
-				$value[$currentIndex] = newImageObject;
+				$generalObjectBlog.content[$currentIndex] = newImageObject;
 			}
 		}
 
 		$currentIndex = null;
-		$toggleImgPopup = false;
+		$togglePopup = null;
 	}
 </script>
 
@@ -59,7 +61,7 @@
 	class="img-popup-close"
 	type="button"
 	on:click={() => {
-		$toggleImgPopup = false;
+		$togglePopup = null;
 	}}>X</button
 >
 

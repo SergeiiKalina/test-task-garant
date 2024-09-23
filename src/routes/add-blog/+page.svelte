@@ -1,28 +1,20 @@
 <script>
 	import { onMount } from 'svelte';
 	import {
-		togglePPopup,
-		toggleListPopup,
-		toggleImgPopup,
-		toggleAPopup,
-		value,
 		currentIndex,
 		startSymbol,
 		endSymbol,
-		editableEl,
 		indexLi,
-		toggleTitlePopup,
-		toggleSeoAndOtherPopup,
 		generalObjectBlog,
 		textForChanges,
-		toggleSubtitle,
 		removeHtmlTags,
-		toggleDeletePopup,
-		isRewriteBlog
+		isRewriteBlog,
+		togglePopup,
+		hiddenToolTip
 	} from '$lib/stores/blogs/store.js';
 	import ButtonBlock from '$lib/components/ButtonBlock.svelte';
 	import ListPopupContent from '$lib/components/ListPopupContent.svelte';
-	import PPopupContent from '$lib/components/PPopupContent.svelte';
+	import ParagraphPopup from '$lib/components/ParagraphPopup.svelte';
 	import PopupBackground from '$lib/components/PopupBackground.svelte';
 	import BigWindowPopup from '$lib/components/BigWindowPopup.svelte';
 	import MiniWindowPopup from '$lib/components/MiniWindowPopup.svelte';
@@ -40,15 +32,12 @@
 
 	onMount(() => {
 		const container = document.querySelector('.container');
-
 		function checkDeselectedText() {
 			const selection = document.getSelection();
 			const selectedText = selection.toString();
 
 			if (!selectedText) {
-				const tooltip = document.querySelector('.tooltip-container');
-				tooltip.style.opacity = 0;
-				tooltip.style.visibility = 'hidden';
+				hiddenToolTip();
 			}
 		}
 
@@ -114,71 +103,8 @@
 		};
 	});
 
-	function addTagStrong() {
-		const content = $value[$currentIndex].content;
-		let index = 0;
-		let startTag = false;
-		let result = '';
-
-		for (let i = 0; i < content.length; i++) {
-			if (content[i] === '<') {
-				startTag = true;
-			}
-			if (!startTag) {
-				if (index === $startSymbol) {
-					result += `<strong>`;
-				}
-				if (index === $endSymbol) {
-					result += '</strong>';
-				}
-				index++;
-			}
-			result += content[i];
-			if (content[i] === '>') {
-				startTag = false;
-			}
-		}
-
-		if (index === $endSymbol) {
-			result += '</a>';
-		}
-
-		if ($indexLi) {
-			const regex = new RegExp(`<li\\s+data-index="${$indexLi}">(.*?)<\/li>`, 'g');
-
-			const modifiedContent = content.replace(regex, (match, p1) => {
-				const beforeText = p1.slice(0, $startSymbol);
-				const afterText = p1.slice($endSymbol);
-				const text = p1.slice($startSymbol, $endSymbol);
-				return `<li data-index="${$indexLi}">${beforeText}<strong>${text}</strong>${afterText}</li>`;
-			});
-			$value[$currentIndex].content = modifiedContent;
-			$indexLi = null;
-		} else {
-			$value[$currentIndex].content = result;
-		}
-
-		document.querySelectorAll('.draggable-block').forEach((el) => (el.draggable = false));
-		$toggleAPopup = false;
-		$editableEl = null;
-		$currentIndex = null;
-	}
-
-	const addUrl = () => {
-		const tooltip = document.querySelector('.tooltip-container');
-		$toggleAPopup = true;
-		tooltip.style.opacity = 0;
-		tooltip.style.visibility = 'hidden';
-	};
-	const addStrong = () => {
-		addTagStrong();
-		const tooltip = document.querySelector('.tooltip-container');
-		tooltip.style.opacity = 0;
-		tooltip.style.visibility = 'hidden';
-	};
-
 	const sendBlog = async () => {
-		const HTML = $value
+		const HTML = $generalObjectBlog.content
 			.slice(2)
 			.map((el) => el.tag.replace('...', el.content))
 			.join('');
@@ -187,11 +113,10 @@
 		$generalObjectBlog = {
 			...$generalObjectBlog,
 			text: HTML,
-			title: $value[1].content,
-			tab: 'article',
+			title: $generalObjectBlog.content[1].content,
 			puretext: pureText
 		};
-
+		delete $generalObjectBlog.content;
 		let newObj = {};
 		for (let key in $generalObjectBlog) {
 			newObj[`param_${key}`] = $generalObjectBlog[key];
@@ -243,49 +168,49 @@
 	<Preview />
 	<button on:click={sendBlog}>send</button>
 </div>
-{#if $toggleListPopup}<PopupBackground>
+{#if $togglePopup === 'list'}<PopupBackground>
 		<BigWindowPopup>
 			<ListPopupContent />
 		</BigWindowPopup>
 	</PopupBackground>{/if}
-{#if $togglePPopup}<PopupBackground>
+{#if $togglePopup === 'paragraph'}<PopupBackground>
 		<BigWindowPopup>
-			<PPopupContent />
+			<ParagraphPopup />
 		</BigWindowPopup>
 	</PopupBackground>
 {/if}
-{#if $toggleImgPopup}<PopupBackground>
+{#if $togglePopup === 'image'}<PopupBackground>
 		<MiniWindowPopup>
 			<ImagePopupContent />
 		</MiniWindowPopup>
 	</PopupBackground>{/if}
-{#if $toggleAPopup}<PopupBackground>
+{#if $togglePopup === 'url'}<PopupBackground>
 		<MiniWindowPopup>
 			<APopupContent />
 		</MiniWindowPopup>
 	</PopupBackground>
 {/if}
-{#if $toggleSubtitle}<PopupBackground>
+{#if $togglePopup === 'subtitle'}<PopupBackground>
 		<BigWindowPopup>
 			<SubtitlePopup />
 		</BigWindowPopup>
 	</PopupBackground>
 {/if}
-{#if $toggleTitlePopup}<PopupBackground>
+{#if $togglePopup === 'title'}<PopupBackground>
 		<BigWindowPopup><TitlePopup /></BigWindowPopup>
 	</PopupBackground>
 {/if}
-{#if $toggleSeoAndOtherPopup}<PopupBackground>
+{#if $togglePopup === 'seo'}<PopupBackground>
 		<BigWindowPopup><SeoAndOtherPopup /></BigWindowPopup>
 	</PopupBackground>
 {/if}
-{#if $toggleDeletePopup}
+{#if $togglePopup === 'delete'}
 	<PopupBackground>
 		<MiniWindowPopup><DeletePopUp /></MiniWindowPopup>
 	</PopupBackground>
 {/if}
 
-<ToolTips {addUrl} {addStrong} />
+<ToolTips />
 
 <style>
 	.container {

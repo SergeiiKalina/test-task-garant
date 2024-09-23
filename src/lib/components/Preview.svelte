@@ -1,5 +1,5 @@
 <script>
-	import { value } from '$lib/stores/blogs/store.js';
+	import { generalObjectBlog } from '$lib/stores/blogs/store.js';
 	import BlogBlock from './BlogBlock.svelte';
 	let draggedIndex = null;
 
@@ -15,17 +15,24 @@
 			draggedIndex = null;
 		}
 		if (draggedIndex !== null && draggedIndex !== index) {
-			const draggedItem = $value[draggedIndex];
-			$value = $value.filter((_, i) => i !== draggedIndex);
-			$value = [...$value.slice(0, index), draggedItem, ...$value.slice(index)];
+			const draggedItem = $generalObjectBlog.content[draggedIndex];
+			$generalObjectBlog.content = $generalObjectBlog.content.filter((_, i) => i !== draggedIndex);
+			$generalObjectBlog.content = [
+				...$generalObjectBlog.content.slice(0, index),
+				draggedItem,
+				...$generalObjectBlog.content.slice(index)
+			];
 		}
 	}
-	$: $value = [...$value.filter((item) => item.main), ...$value.filter((item) => !item.main)];
+	$: $generalObjectBlog.content = [
+		...$generalObjectBlog.content.filter((item) => item.main),
+		...$generalObjectBlog.content.filter((item) => !item.main)
+	];
 </script>
 
 <section class="preview_block" id="list">
 	<div>
-		{#each $value as item, index}
+		{#each $generalObjectBlog.content as item, index}
 			<BlogBlock {item} {index} {handleDragStart} {handleDrop} {draggedIndex} />
 		{/each}
 	</div>

@@ -1,25 +1,30 @@
 <script>
-	import { toggleListPopup, value, inputList, currentIndex } from '$lib/stores/blogs/store.js';
+	import {
+		togglePopup,
+		generalObjectBlog,
+		inputList,
+		currentIndex
+	} from '$lib/stores/blogs/store.js';
 	import CloseButton from './CloseButton.svelte';
 	let isNumeric = false;
 	function createListObj() {
 		return {
 			tag: isNumeric ? `<ol>...</ol>` : `<ul>...</ul>`,
-			content: `${$inputList.map((el, index) => `<li data-index="${index}">${content}</li>`).join('')}`
+			content: `${$inputList.map((el, index) => `<li data-index="${index}">${el.content}</li>`).join('')}`
 		};
 	}
 
 	const addList = () => {
 		if ($currentIndex !== null) {
-			$value[$currentIndex] = createListObj();
+			$generalObjectBlog.content[$currentIndex] = createListObj();
 		} else {
-			$value = [...$value, createListObj()];
+			$generalObjectBlog.content = [...$generalObjectBlog.content, createListObj()];
 		}
-		$toggleListPopup = false;
+		$togglePopup = null;
 		$currentIndex = null;
 	};
 	function closePopup() {
-		$toggleListPopup = false;
+		$togglePopup = null;
 	}
 </script>
 

@@ -1,5 +1,11 @@
 <script>
-	import { togglePPopup, lorem, value, paragraph, currentIndex } from '$lib/stores/blogs/store.js';
+	import {
+		togglePopup,
+		lorem,
+		generalObjectBlog,
+		paragraph,
+		currentIndex
+	} from '$lib/stores/blogs/store.js';
 	import CloseButton from './CloseButton.svelte';
 
 	const addParagraph = () => {
@@ -8,16 +14,16 @@
 			content: $paragraph
 		};
 		if ($currentIndex !== null) {
-			$value[$currentIndex].content = $paragraph;
+			$generalObjectBlog.content[$currentIndex].content = $paragraph;
 			$currentIndex = null;
 		} else {
-			$value = [...$value, objParagraph];
+			$generalObjectBlog.content = [...$generalObjectBlog.content, objParagraph];
 		}
 
-		$togglePPopup = false;
+		$togglePopup = null;
 	};
 	const closePopup = () => {
-		$togglePPopup = false;
+		$togglePopup = null;
 	};
 </script>
 

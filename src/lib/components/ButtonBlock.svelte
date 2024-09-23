@@ -1,13 +1,8 @@
 <script>
 	import {
-		togglePPopup,
-		toggleListPopup,
-		toggleImgPopup,
-		toggleTitlePopup,
-		toggleSeoAndOtherPopup,
+		togglePopup,
 		flagMainImg,
 		generalObjectBlog,
-		toggleSubtitle,
 		isRewriteBlog,
 		currentIndex
 	} from '$lib/stores/blogs/store.js';
@@ -16,42 +11,42 @@
 <section class="block-add-blocks">
 	<button
 		on:click={() => {
-			$toggleImgPopup = true;
+			$togglePopup = 'image';
 			$flagMainImg = true;
 		}}>{$isRewriteBlog ? 'change main image' : 'Add main image'}</button
 	>
 	<button
 		on:click={() => {
-			$toggleTitlePopup = true;
+			$togglePopup = 'title';
 		}}>{$isRewriteBlog ? 'change main title' : 'Add main title'}</button
 	>
 	<button
 		on:click={() => {
 			$currentIndex = null;
-			$togglePPopup = true;
+			$togglePopup = 'paragraph';
 		}}>Add paragraph</button
 	>
 	<button
 		on:click={() => {
 			$currentIndex = null;
-			$toggleSubtitle = true;
+			$togglePopup = 'subtitle';
 		}}>Add subTitle</button
 	>
 	<button
 		on:click={() => {
 			$currentIndex = null;
-			$toggleListPopup = true;
+			$togglePopup = 'list';
 		}}>Add list</button
 	>
 	<button
 		on:click={() => {
 			$currentIndex = null;
-			$toggleImgPopup = true;
+			$togglePopup = 'image';
 		}}>Add image</button
 	>
 	<button
 		on:click={() => {
-			$toggleSeoAndOtherPopup = true;
+			$togglePopup = 'seo';
 		}}
 		>{$isRewriteBlog ? 'rewrite Seo and slug' : 'Add Seo and slug'}
 	</button>
