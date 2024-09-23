@@ -11,7 +11,7 @@
 	import CloseButton from '$lib/components/CloseButton.svelte';
 	let url = '';
 
-	const parseString = (text, url) => {
+	const parseItemAndAddUrl = (text, url) => {
 		let startTag = false;
 		let counter = 0;
 		let result = '';
@@ -26,6 +26,7 @@
 			result += el;
 			if (el === '>') startTag = false;
 		});
+		if (counter === $endSymbol) result += '</a>';
 		return result;
 	};
 
@@ -34,13 +35,13 @@
 
 		if ($indexLi) {
 			const regex = new RegExp(`<li\\s+data-index="${$indexLi}">(.*?)<\/li>`, 'g');
-			const modifiedContent = content.replace(regex, (match, p1) => {
-				return `<li data-index="${$indexLi}">${parseString(p1, url)}</li>`;
+			const modifiedContent = content.replace(regex, (_, p1) => {
+				return `<li data-index="${$indexLi}">${parseItemAndAddUrl(p1, url)}</li>`;
 			});
 			$generalObjectBlog.content[$currentIndex].content = modifiedContent;
 			$indexLi = null;
 		} else {
-			$generalObjectBlog.content[$currentIndex].content = parseString(content, url);
+			$generalObjectBlog.content[$currentIndex].content = parseItemAndAddUrl(content, url);
 		}
 
 		document.querySelectorAll('.draggable-block').forEach((el) => (el.draggable = false));

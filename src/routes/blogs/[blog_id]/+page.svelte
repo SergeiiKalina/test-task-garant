@@ -33,7 +33,9 @@
 				if (nodeTag === 'img') {
 					arr.push({
 						tag: `<div style="margin-top: 24px;">...</div>`,
-						content: node.outerHTML
+						content: node.outerHTML,
+						alt: node.alt,
+						src: node.src
 					});
 				} else {
 					arr.push({

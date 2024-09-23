@@ -79,8 +79,8 @@
 					const srcMatch = item.content.match(/src="([^"]*)"/);
 					const altMatch = item.content.match(/alt="([^"]*)"/);
 					$currentImgData = {
-						src: srcMatch ? srcMatch[1] : '',
-						alt: altMatch ? altMatch[1] : ''
+						src: srcMatch ? srcMatch[1] : item.src || '',
+						alt: altMatch ? altMatch[1] : item.alt || ''
 					};
 				}
 				if (item.main && item.tag.startsWith('<div')) {

@@ -14,7 +14,6 @@ export const initialState = [
 export const togglePopup = writable(null)
 export const isRewriteBlog = writable(false)
 export const generalObjectBlog = writable({content: initialState, tab: 'article'})
-export const textForChanges = writable(null)
 export const flagMainImg  =writable(false)
 export const currentIndex = writable( null)
 export const startSymbol = writable( null)

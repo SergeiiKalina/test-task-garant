@@ -4,20 +4,25 @@
 		uploadPhoto,
 		flagMainImg,
 		generalObjectBlog,
-		currentIndex
+		currentIndex,
+		currentImgData
 	} from '$lib/stores/blogs/store.js';
-	let imgSrc = '';
 
-	function createImageObject(src, flag) {
+	let imgSrc = '';
+	let alt = '';
+
+	function createImageObject(src, alt, flag) {
 		return {
 			tag: `<div style="margin-top: 24px;">...</div>`,
-			content: `<img width="100%" src="${src}" alt="pictures"/>`,
-			main: flag
+			content: `<img width="100%" src="${src}" alt="${alt}"/>`,
+			main: flag,
+			alt,
+			src
 		};
 	}
 
-	function addImageObject(imgSrc) {
-		const newImageObject = createImageObject(imgSrc, $flagMainImg);
+	function addImageObject(imgSrc, alt) {
+		const newImageObject = createImageObject(imgSrc, alt, $flagMainImg);
 		if ($flagMainImg) {
 			if ($generalObjectBlog.content.length > 0) {
 				if (
@@ -49,14 +54,21 @@
 	}
 </script>
 
-<input
-	type="file"
-	name="img"
-	on:change={async (e) => {
-		imgSrc = await uploadPhoto(e.target.files[0]);
-	}}
-/>
-<button on:click={() => addImageObject(imgSrc)}>ADD</button>
+<section>
+	<input
+		type="file"
+		name="img"
+		on:change={async (e) => {
+			imgSrc = await uploadPhoto(e.target.files[0]);
+		}}
+	/>
+	<label
+		><div>Alt</div>
+		<input type="text" bind:value={$currentImgData.alt} /></label
+	>
+	<button class="add" on:click={() => addImageObject(imgSrc, $currentImgData.alt)}>ADD</button>
+</section>
+
 <button
 	class="img-popup-close"
 	type="button"
@@ -66,6 +78,21 @@
 >
 
 <style>
+	.add {
+		width: 50%;
+	}
+	section {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		height: 100%;
+		justify-content: space-evenly;
+	}
+	label {
+		display: flex;
+		justify-content: space-between;
+		width: 85%;
+	}
 	.img-popup-close {
 		position: absolute;
 		top: 10px;

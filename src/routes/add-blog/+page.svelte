@@ -6,7 +6,6 @@
 		endSymbol,
 		indexLi,
 		generalObjectBlog,
-		textForChanges,
 		removeHtmlTags,
 		isRewriteBlog,
 		togglePopup,
@@ -65,7 +64,6 @@
 						$indexLi = selectedElement.getAttribute('data-index');
 					}
 					$currentIndex = selectedElement.closest('.draggable-block').id.split('-')[1];
-					$textForChanges = selectedText;
 
 					const preRange = document.createRange();
 					preRange.setStart(selectedElement, 0);
@@ -76,7 +74,7 @@
 					$startSymbol = startIndex;
 					$endSymbol = endIndex;
 
-					if ($textForChanges && $currentIndex !== null) {
+					if ($currentIndex !== null) {
 						const tooltip = document.querySelector('.tooltip-container');
 						tooltip.style.top = positionMouseY - 60 + 'px';
 						tooltip.style.left = positionMouseX + 'px';
