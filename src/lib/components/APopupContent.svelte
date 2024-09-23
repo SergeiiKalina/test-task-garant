@@ -17,22 +17,14 @@
 		let result = '';
 
 		[...text].forEach((el) => {
-			if (el === '<') {
-				startTag = true;
-			}
+			if (el === '<') startTag = true;
 			if (!startTag) {
-				if (counter === $startSymbol) {
-					result += `<a href="${url}">`;
-				}
-				if (counter === $endSymbol) {
-					result += '</a>';
-				}
+				if (counter === $startSymbol) result += `<a href="${url}">`;
+				if (counter === $endSymbol) result += '</a>';
 				counter++;
 			}
 			result += el;
-			if (el === '>') {
-				startTag = false;
-			}
+			if (el === '>') startTag = false;
 		});
 		return result;
 	};

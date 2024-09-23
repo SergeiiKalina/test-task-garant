@@ -26,27 +26,17 @@
 		let result = '';
 
 		for (let i = 0; i < content.length; i++) {
-			if (content[i] === '<') {
-				startTag = true;
-			}
+			if (content[i] === '<') startTag = true;
 			if (!startTag) {
-				if (index === $startSymbol) {
-					result += `<strong>`;
-				}
-				if (index === $endSymbol) {
-					result += '</strong>';
-				}
+				if (index === $startSymbol) result += `<strong>`;
+				if (index === $endSymbol) result += '</strong>';
 				index++;
 			}
 			result += content[i];
-			if (content[i] === '>') {
-				startTag = false;
-			}
+			if (content[i] === '>') startTag = false;
 		}
 
-		if (index === $endSymbol) {
-			result += '</a>';
-		}
+		if (index === $endSymbol) result += '</a>';
 
 		if ($indexLi) {
 			const regex = new RegExp(`<li\\s+data-index="${$indexLi}">(.*?)<\/li>`, 'g');
