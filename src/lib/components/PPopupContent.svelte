@@ -2,18 +2,16 @@
 	import { togglePPopup, lorem, value, paragraph, currentIndex } from '$lib/stores/blogs/store.js';
 	import CloseButton from './CloseButton.svelte';
 
-	const addP = () => {
+	const addParagraph = () => {
+		const objParagraph = {
+			tag: `<p style="cursor: pointer;">...</p>`,
+			content: $paragraph
+		};
 		if ($currentIndex !== null) {
 			$value[$currentIndex].content = $paragraph;
 			$currentIndex = null;
 		} else {
-			$value = [
-				...$value,
-				{
-					tag: `<p style="cursor: pointer;">...</p>`,
-					content: $paragraph
-				}
-			];
+			$value = [...$value, objParagraph];
 		}
 
 		$togglePPopup = false;
@@ -34,13 +32,7 @@
 	generate paragraph</button
 >
 <textarea name="paragraph" rows="20" cols="60" bind:value={$paragraph}></textarea>
-<button
-	on:click={() => {
-		addP();
-	}}
->
-	{$currentIndex !== null ? 'Rewrite' : 'ADD'}</button
->
+<button on:click={addParagraph}> {$currentIndex !== null ? 'Rewrite' : 'ADD'}</button>
 
 <style>
 	textarea {

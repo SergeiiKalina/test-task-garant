@@ -11,9 +11,9 @@
 		toggleDeletePopup,
 		inputList,
 		toggleTitlePopup,
-		title,
 		toggleImgPopup,
-		currentImgData
+		currentImgData,
+		flagMainImg
 	} from '$lib/stores/blogs/store.js';
 	export let item;
 	export let index;
@@ -92,7 +92,6 @@
 					$inputList = parseItemList(item.content);
 				} else if (item.tag.startsWith('<h1>')) {
 					$toggleTitlePopup = true;
-					$title = removeHtmlTags(item.content);
 				} else if (item.content.startsWith('<img')) {
 					$toggleImgPopup = true;
 					const srcMatch = item.content.match(/src="([^"]*)"/);
@@ -101,6 +100,9 @@
 						src: srcMatch ? srcMatch[1] : '',
 						alt: altMatch ? altMatch[1] : ''
 					};
+				}
+				if (item.main && item.tag.startsWith('<div')) {
+					$flagMainImg = true;
 				}
 			}}>Rewrite block</button
 		>

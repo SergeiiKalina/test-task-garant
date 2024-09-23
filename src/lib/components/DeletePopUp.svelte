@@ -2,7 +2,6 @@
 	import { currentIndex, toggleDeletePopup, value } from '$lib/stores/blogs/store.js';
 	const deleteItem = () => {
 		$value = $value.filter((el, index) => index !== $currentIndex);
-
 		$currentIndex = null;
 		$toggleDeletePopup = false;
 	};

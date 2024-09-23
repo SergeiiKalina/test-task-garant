@@ -18,11 +18,7 @@
 		toggleSubtitle,
 		removeHtmlTags,
 		toggleDeletePopup,
-		isRewriteBlog,
-		titleseo,
-		descriptionseo,
-		slug,
-		initialState
+		isRewriteBlog
 	} from '$lib/stores/blogs/store.js';
 	import ButtonBlock from '$lib/components/ButtonBlock.svelte';
 	import ListPopupContent from '$lib/components/ListPopupContent.svelte';
@@ -38,7 +34,6 @@
 	import SeoAndOtherPopup from '$lib/components/SeoAndOtherPopup.svelte';
 	import SubtitlePopup from '$lib/components/SubtitlePopup.svelte';
 	import DeletePopUp from '$lib/components/DeletePopUp.svelte';
-	import CloseButton from '$lib/components/CloseButton.svelte';
 
 	let positionMouseX = null;
 	let positionMouseY = null;
@@ -188,13 +183,10 @@
 			.map((el) => el.tag.replace('...', el.content))
 			.join('');
 		const pureText = removeHtmlTags(HTML);
-
+		console.log($generalObjectBlog);
 		$generalObjectBlog = {
 			...$generalObjectBlog,
 			text: HTML,
-			descriptionseo: $descriptionseo,
-			titleseo: $titleseo,
-			slug: $slug,
 			title: $value[1].content,
 			tab: 'article',
 			puretext: pureText

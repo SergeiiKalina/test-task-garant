@@ -21,7 +21,7 @@
 		const newImageObject = createImageObject(imgSrc, $flagMainImg);
 		if ($flagMainImg) {
 			if ($value.length > 0) {
-				if ($value[0].main) {
+				if ($value[0].main && !$value[0].tag.startsWith('<h1')) {
 					$value[0] = newImageObject;
 				} else {
 					value.update((v) => {

@@ -1,35 +1,29 @@
 <script>
 	import { toggleListPopup, value, inputList, currentIndex } from '$lib/stores/blogs/store.js';
+	import CloseButton from './CloseButton.svelte';
 	let isNumeric = false;
+	function createListObj() {
+		return {
+			tag: isNumeric ? `<ol>...</ol>` : `<ul>...</ul>`,
+			content: `${$inputList.map((el, index) => `<li data-index="${index}">${content}</li>`).join('')}`
+		};
+	}
 
 	const addList = () => {
 		if ($currentIndex !== null) {
-			$value[$currentIndex] = {
-				tag: isNumeric ? `<ol>...</ol>` : `<ul>...</ul>`,
-				content: `${$inputList.map((el, index) => `<li data-index="${index}">${el.content}</li>`).join('')}`
-			};
+			$value[$currentIndex] = createListObj();
 		} else {
-			$value = [
-				...$value,
-				{
-					tag: isNumeric ? `<ol>...</ol>` : `<ul>...</ul>`,
-					content: `${$inputList.map((el, index) => `<li data-index="${index}">${el.content}</li>`).join('')}`
-				}
-			];
+			$value = [...$value, createListObj()];
 		}
-
 		$toggleListPopup = false;
 		$currentIndex = null;
 	};
+	function closePopup() {
+		$toggleListPopup = false;
+	}
 </script>
 
-<button
-	class="button-popup-close"
-	type="button"
-	on:click={() => {
-		$toggleListPopup = false;
-	}}>X</button
->
+<CloseButton {closePopup} />
 <h2>Add List</h2>
 <section class="numeric-button">
 	<button

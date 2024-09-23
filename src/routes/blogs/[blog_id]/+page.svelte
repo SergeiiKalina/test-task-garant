@@ -1,12 +1,5 @@
 <script>
-	import {
-		value,
-		titleseo,
-		slug,
-		descriptionseo,
-		isRewriteBlog,
-		generalObjectBlog
-	} from '$lib/stores/blogs/store.js';
+	import { value, isRewriteBlog, generalObjectBlog } from '$lib/stores/blogs/store.js';
 	import src from '$lib/images/3.webp';
 	import src2 from '$lib//images/2.webp';
 	import { goto } from '$app/navigation';
@@ -170,10 +163,6 @@
 			}
 		});
 
-		$slug = blog.slug;
-		$titleseo = blog.titleseo;
-		$descriptionseo = blog.descriptionseo;
-
 		$value = arr;
 		$isRewriteBlog = true;
 		$value = [
@@ -193,7 +182,10 @@
 			...$generalObjectBlog,
 			blog_id: blog.blog_id,
 			image: blog.image,
-			background_image: blog.background_image
+			background_image: blog.background_image,
+			slug: blog.slug,
+			titleseo: blog.titleseo,
+			descriptionseo: blog.descriptionseo
 		};
 		goto('/add-blog');
 	}}>rewrite blog</button

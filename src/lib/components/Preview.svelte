@@ -17,7 +17,6 @@
 		if (draggedIndex !== null && draggedIndex !== index) {
 			const draggedItem = $value[draggedIndex];
 			$value = $value.filter((_, i) => i !== draggedIndex);
-
 			$value = [...$value.slice(0, index), draggedItem, ...$value.slice(index)];
 		}
 	}

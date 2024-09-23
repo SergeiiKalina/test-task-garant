@@ -21,10 +21,6 @@ export const currentImgData = writable({src: '',
 })
 export const editableEl = writable(null);
 export const indexLi = writable(null);
-export const title = writable('')
-export const titleseo = writable('')
-export const slug = writable('')
-export const descriptionseo = writable('')
 export const paragraph = writable('');
 export const subtitle = writable('');
 export const inputList = writable([{ id: 'item-1' }, { id: 'item-2' }])
