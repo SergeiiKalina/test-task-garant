@@ -63,7 +63,7 @@
 				if (item.tag.startsWith('<p')) {
 					$togglePopup = 'paragraph';
 					$paragraph = removeHtmlTags(item.content);
-				} else if (item.tag.startsWith('<h2>')) {
+				} else if (item.tag.startsWith('<h2>') || item.tag.startsWith('<h3>')) {
 					$togglePopup = 'subtitle';
 					$subtitle = removeHtmlTags(item.content);
 				} else if (item.tag.startsWith('<ol>')) {
